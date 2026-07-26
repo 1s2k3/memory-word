@@ -164,7 +164,8 @@ export default async function handler(req, res) {
     const blob = await put(pathname, file.data, {
       access: 'public',
       contentType: file.type,
-      addRandomSuffix: false
+      addRandomSuffix: true,
+      allowOverwrite: false
     });
 
     const index = await getIndex();
