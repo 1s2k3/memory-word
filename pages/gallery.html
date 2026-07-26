@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>生活碎片 · Fragments — TA的小世界</title>
+  <meta name="description" content="不是精心策划的相册，是手机里舍不得删的日常。生活碎片，拼在一起就是我。">
+
+  <!-- 1. 设计令牌 -->
+  <style id="theme-vars">
+    :root {
+      --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 80px;
+      --r-xs: 2px; --r-sm: 4px; --r-md: 8px; --r-lg: 16px; --r-xl: 24px; --r-pill: 999px;
+      --brand: #E89B8C; --brand-strong: #D77B6A; --brand-soft: #F6D9D1; --brand-tint: #FCEEEA; --brand-ink: #5A2A20;
+      --bg: #FBF7F4; --surface: #FFFFFF; --surface-2: #F6EFEA; --surface-3: #EFE4DC;
+      --ink: #3A2A24; --ink-2: #6B5750; --ink-3: #9C8B83;
+      --line: #EBE0D8; --line-soft: #F3EAE3;
+      --state-success: #7FAE8E; --state-warning: #E0A86A; --state-error: #D96666; --state-info: #7BA3C4;
+      --shadow-1: 0 1px 2px rgba(122, 80, 70, 0.05), 0 1px 1px rgba(122, 80, 70, 0.03);
+      --shadow-2: 0 8px 24px -8px rgba(122, 80, 70, 0.16);
+      --shadow-3: 0 24px 60px -20px rgba(122, 80, 70, 0.28);
+      --font-sans: "Inter", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+      --font-display: "Noto Serif SC", "Source Han Serif SC", "Songti SC", Georgia, serif;
+      --font-hand: "Caveat", "Noto Sans SC", cursive;
+      /* 语义别名 */
+      --brand-background: var(--bg); --brand-foreground: var(--ink); --brand-card: var(--surface); --brand-card-foreground: var(--ink);
+      --brand-popover: var(--surface); --brand-popover-foreground: var(--ink);
+      --brand-primary: var(--brand-strong); --brand-primary-foreground: #FFFFFF;
+      --brand-secondary: var(--surface-3); --brand-secondary-foreground: var(--ink-2);
+      --brand-muted: var(--surface-2); --brand-muted-foreground: var(--ink-2);
+      --brand-accent: var(--brand-soft); --brand-accent-foreground: var(--brand-ink);
+      --brand-destructive: var(--state-error); --brand-destructive-foreground: #FFFFFF;
+      --brand-border: var(--line); --brand-input: var(--line); --brand-ring: var(--brand-strong);
+      --brand-radius-sm: var(--r-sm); --brand-radius-md: var(--r-md); --brand-radius-lg: var(--r-lg); --brand-radius-xl: var(--r-xl);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: var(--font-sans); color: var(--ink); background: var(--bg); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+    ::selection { background: var(--brand-soft); color: var(--brand-ink); }
+    ::-webkit-scrollbar { width: 10px; height: 10px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: var(--r-pill); border: 2px solid var(--bg); }
+    ::-webkit-scrollbar-thumb:hover { background: var(--brand-soft); }
+  </style>
+
+  <!-- 2. Tailwind 浏览器运行时 -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
+
+  <!-- 3. Lucide 图标 -->
+  <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+
+  <!-- 4. Tailwind 语义映射 -->
+  <style type="text/tailwindcss">
+    @theme inline {
+      --color-background: var(--brand-background);
+      --color-foreground: var(--brand-foreground);
+      --color-card: var(--brand-card);
+      --color-card-foreground: var(--brand-card-foreground);
+      --color-popover: var(--brand-popover);
+      --color-popover-foreground: var(--brand-popover-foreground);
+      --color-primary: var(--brand-primary);
+      --color-primary-foreground: var(--brand-primary-foreground);
+      --color-secondary: var(--brand-secondary);
+      --color-secondary-foreground: var(--brand-secondary-foreground);
+      --color-muted: var(--brand-muted);
+      --color-muted-foreground: var(--brand-muted-foreground);
+      --color-accent: var(--brand-accent);
+      --color-accent-foreground: var(--brand-accent-foreground);
+      --color-destructive: var(--brand-destructive);
+      --color-destructive-foreground: var(--brand-destructive-foreground);
+      --color-border: var(--brand-border);
+      --color-input: var(--brand-input);
+      --color-ring: var(--brand-ring);
+      --radius-sm: var(--brand-radius-sm);
+      --radius-md: var(--brand-radius-md);
+      --radius-lg: var(--brand-radius-lg);
+      --radius-xl: var(--brand-radius-xl);
+    }
+    @layer base {
+      body { background: var(--brand-background); color: var(--brand-foreground); }
+      td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+      th { @apply whitespace-nowrap; }
+    }
+  </style>
+
+  <!-- 5. 语义令牌回退 -->
+  <style id="semantic-token-fallback">
+    .bg-background { background-color: var(--brand-background); }
+    .bg-foreground { background-color: var(--brand-foreground); }
+    .text-background { color: var(--brand-background); }
+    .text-foreground { color: var(--brand-foreground); }
+    .bg-card { background-color: var(--brand-card); }
+    .bg-card-foreground { background-color: var(--brand-card-foreground); }
+    .text-card { color: var(--brand-card); }
+    .text-card-foreground { color: var(--brand-card-foreground); }
+    .bg-popover { background-color: var(--brand-popover); }
+    .bg-popover-foreground { background-color: var(--brand-popover-foreground); }
+    .text-popover { color: var(--brand-popover); }
+    .text-popover-foreground { color: var(--brand-popover-foreground); }
+    .bg-primary { background-color: var(--brand-primary); }
+    .bg-primary-foreground { background-color: var(--brand-primary-foreground); }
+    .text-primary { color: var(--brand-primary); }
+    .text-primary-foreground { color: var(--brand-primary-foreground); }
+    .border-primary { border-color: var(--brand-primary); }
+    .ring-primary { --tw-ring-color: var(--brand-primary); }
+    .bg-secondary { background-color: var(--brand-secondary); }
+    .bg-secondary-foreground { background-color: var(--brand-secondary-foreground); }
+    .text-secondary { color: var(--brand-secondary); }
+    .text-secondary-foreground { color: var(--brand-secondary-foreground); }
+    .border-secondary { border-color: var(--brand-secondary); }
+    .ring-secondary { --tw-ring-color: var(--brand-secondary); }
+    .bg-muted { background-color: var(--brand-muted); }
+    .bg-muted-foreground { background-color: var(--brand-muted-foreground); }
+    .text-muted { color: var(--brand-muted); }
+    .text-muted-foreground { color: var(--brand-muted-foreground); }
+    .border-muted { border-color: var(--brand-muted); }
+    .ring-muted { --tw-ring-color: var(--brand-muted); }
+    .bg-accent { background-color: var(--brand-accent); }
+    .bg-accent-foreground { background-color: var(--brand-accent-foreground); }
+    .text-accent { color: var(--brand-accent); }
+    .text-accent-foreground { color: var(--brand-accent-foreground); }
+    .border-accent { border-color: var(--brand-accent); }
+    .ring-accent { --tw-ring-color: var(--brand-accent); }
+    .bg-destructive { background-color: var(--brand-destructive); }
+    .bg-destructive-foreground { background-color: var(--brand-destructive-foreground); }
+    .text-destructive { color: var(--brand-destructive); }
+    .text-destructive-foreground { color: var(--brand-destructive-foreground); }
+    .border-destructive { border-color: var(--brand-destructive); }
+    .ring-destructive { --tw-ring-color: var(--brand-destructive); }
+    .bg-border { background-color: var(--brand-border); }
+    .text-border { color: var(--brand-border); }
+    .border-border { border-color: var(--brand-border); }
+    .bg-input { background-color: var(--brand-input); }
+    .text-input { color: var(--brand-input); }
+    .border-input { border-color: var(--brand-input); }
+    .bg-ring { background-color: var(--brand-ring); }
+    .text-ring { color: var(--brand-ring); }
+    .ring-ring { --tw-ring-color: var(--brand-ring); }
+  </style>
+
+  <!-- 6. 图标基础 + 工具类 -->
+  <style>
+    [data-icon] { display: inline-flex; align-items: center; justify-content: center; width: 1em; height: 1em; line-height: 0; }
+    [data-icon] svg { width: 1em; height: 1em; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+
+  <!-- 7. 关键布局（不依赖 Tailwind 运行时） -->
+  <style id="critical-layout">
+    .topbar {
+      position: sticky; top: 0; z-index: 50;
+      display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+      gap: var(--s-3);
+      padding: var(--s-3) var(--s-5);
+      background: color-mix(in srgb, var(--bg) 88%, transparent);
+      backdrop-filter: saturate(140%) blur(10px);
+      -webkit-backdrop-filter: saturate(140%) blur(10px);
+      border-bottom: 1px solid var(--line-soft);
+    }
+    .topbar .nav-left { display: inline-flex; align-items: center; gap: var(--s-2); }
+    .topbar .nav-title { text-align: center; }
+    .topbar .nav-right { display: flex; justify-content: flex-end; }
+
+    .section { width: 100%; max-width: 1200px; margin-inline: auto; padding-inline: var(--s-5); }
+
+    .hero { position: relative; padding-block: var(--s-7) var(--s-6); text-align: center; }
+    .hero .hero-eyebrow { display: inline-flex; align-items: center; gap: var(--s-2); }
+    .hero .hero-title { font-family: var(--font-display); }
+    .hero .hero-en { letter-spacing: 0.32em; }
+    .hero .hero-desc { max-width: 56ch; margin-inline: auto; }
+    .hero .hero-meta { display: inline-flex; flex-wrap: wrap; justify-content: center; gap: var(--s-3) var(--s-5); }
+
+    .gallery-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--s-3); }
+    .filter-bar { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+
+    .photo-grid { column-count: 3; column-gap: var(--s-4); }
+    .photo-grid .photo-card { break-inside: avoid; margin-bottom: var(--s-4); }
+
+    .photo-card { position: relative; display: block; border-radius: var(--r-lg); overflow: hidden; background: var(--surface); border: 1px solid var(--line-soft); box-shadow: var(--shadow-1); cursor: pointer; }
+    .photo-card img { display: block; width: 100%; height: auto; }
+    .photo-card figcaption { padding: var(--s-3) var(--s-4); }
+
+    .lightbox { position: fixed; inset: 0; z-index: 100; display: none; align-items: center; justify-content: center; background: color-mix(in srgb, var(--ink) 78%, transparent); padding: var(--s-5); }
+    .lightbox.is-open { display: flex; }
+    .lightbox .lb-stage { position: relative; max-width: min(92vw, 1100px); max-height: 88vh; display: flex; align-items: center; justify-content: center; }
+    .lightbox img { max-width: 100%; max-height: 88vh; object-fit: contain; border-radius: var(--r-lg); box-shadow: var(--shadow-3); }
+
+    .footer { border-top: 1px solid var(--line-soft); padding-block: var(--s-6); text-align: center; }
+
+    @media (max-width: 900px) {
+      .photo-grid { column-count: 2; }
+    }
+    @media (max-width: 600px) {
+      .topbar { grid-template-columns: auto 1fr auto; padding: var(--s-3) var(--s-4); }
+      .photo-grid { column-count: 1; }
+      .hero { padding-block: var(--s-6) var(--s-5); }
+    }
+  </style>
+</head>
+<body class="min-h-screen font-sans antialiased">
+
+  <!-- 顶部导航 -->
+  <header class="topbar" role="banner">
+    <a href="index.html" class="nav-left" data-dom-id="back-home" aria-label="返回首页">
+      <span data-icon aria-hidden="true"><i data-lucide="arrow-left" style="width:18px;height:18px;"></i></span>
+      <span class="text-foreground" style="font-size:14px;">返回首页</span>
+    </a>
+    <div class="nav-title">
+      <h1 class="text-foreground" style="margin:0;font-family:var(--font-display);font-size:18px;font-weight:600;letter-spacing:0.02em;">生活碎片 · Fragments</h1>
+    </div>
+    <div class="nav-right">
+      <a href="upload.html" data-dom-id="cta-upload" style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--r-md);font-size:14px;font-weight:500;border:1px solid var(--line);background:var(--surface);color:var(--ink-2);text-decoration:none;box-shadow:var(--shadow-1);">
+        <span data-icon aria-hidden="true"><i data-lucide="upload" style="width:16px;height:16px;"></i></span>
+        上传碎片
+      </a>
+      <a href="auth.html" data-dom-id="back-home-2" class="bg-primary text-primary-foreground" style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--r-md);font-size:14px;font-weight:500;box-shadow:var(--shadow-1);">
+        <span data-icon aria-hidden="true"><i data-lucide="log-in" style="width:16px;height:16px;"></i></span>
+        登录
+      </a>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section id="hero" class="hero section" aria-labelledby="hero-title">
+    <span class="hero-eyebrow bg-accent text-accent-foreground" style="padding:6px 14px;border-radius:var(--r-pill);font-size:12px;letter-spacing:0.06em;">
+      <span data-icon aria-hidden="true"><i data-lucide="sparkles" style="width:14px;height:14px;"></i></span>
+      二零二六 · 那些被收藏的瞬间
+    </span>
+    <h2 id="hero-title" class="hero-title text-foreground" style="margin:20px 0 8px;font-size:clamp(40px, 7vw, 72px);font-weight:700;line-height:1.05;">生活碎片</h2>
+    <p class="hero-en text-foreground" style="margin:0 0 24px;font-size:13px;font-weight:600;opacity:0.55;">FRAGMENTS&nbsp;OF&nbsp;LIFE</p>
+    <p class="hero-desc text-foreground" style="margin:0 auto 28px;font-size:16px;line-height:1.75;opacity:0.82;">
+      不是精心策划的相册，是手机里舍不得删的日常。一个表情、一次出门、一只路过的猫、一个突然冒出来的念头——它们拼在一起，就是我。
+    </p>
+    <div class="hero-meta" role="list" aria-label="碎片统计">
+      <span class="hero-meta-item" role="listitem" style="display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--ink-2);">
+        <span data-icon aria-hidden="true"><i data-lucide="images" style="width:16px;height:16px;color:var(--brand-strong);"></i></span>
+        21 个碎片
+      </span>
+      <span class="hero-meta-item" role="listitem" style="display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--ink-2);">
+        <span data-icon aria-hidden="true"><i data-lucide="heart" style="width:16px;height:16px;color:var(--brand-strong);"></i></span>
+        6 种心情
+      </span>
+      <span class="hero-meta-item" role="listitem" style="display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--ink-2);">
+        <span data-icon aria-hidden="true"><i data-lucide="refresh-cw" style="width:16px;height:16px;color:var(--state-success);"></i></span>
+        持续更新中
+      </span>
+    </div>
+  </section>
+
+  <!-- 画廊区 -->
+  <section id="gallery" class="section" style="padding-block:var(--s-6) var(--s-7);" aria-labelledby="gallery-title">
+    <div class="gallery-head" style="margin-bottom:var(--s-5);">
+      <div>
+        <h3 id="gallery-title" class="text-foreground" style="margin:0 0 6px;font-family:var(--font-display);font-size:28px;font-weight:700;">慢慢翻，慢慢看</h3>
+        <p class="text-muted-foreground" style="margin:0;font-size:13px;">
+          <span id="photo-count">21张照片 · 当前显示 21</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- 筛选条 -->
+    <div class="filter-bar no-scrollbar" role="tablist" id="filter-bar" aria-label="按分类筛选照片" style="margin-bottom:var(--s-5);">
+      <button type="button" class="filter-chip is-active" data-dom-id="filter-全部" data-filter="全部" role="tab" aria-selected="true">全部</button>
+      <button type="button" class="filter-chip" data-dom-id="filter-日常" data-filter="日常" role="tab" aria-selected="false">日常</button>
+      <button type="button" class="filter-chip" data-dom-id="filter-造型" data-filter="造型" role="tab" aria-selected="false">造型</button>
+      <button type="button" class="filter-chip" data-dom-id="filter-猫咪" data-filter="猫咪" role="tab" aria-selected="false">猫咪</button>
+      <button type="button" class="filter-chip" data-dom-id="filter-校园" data-filter="校园" role="tab" aria-selected="false">校园</button>
+      <button type="button" class="filter-chip" data-dom-id="filter-心情" data-filter="心情" role="tab" aria-selected="false">心情</button>
+      <button type="button" class="filter-chip" data-dom-id="filter-好物" data-filter="好物" role="tab" aria-selected="false">好物</button>
+    </div>
+
+    <!-- 照片网格 -->
+    <div class="photo-grid" id="photo-grid" role="list" aria-label="照片瀑布流">
+
+      <figure class="photo-card" data-category="日常" data-dom-id="photo-1" data-index="0" tabindex="0" role="button" aria-label="查看第1张：清晨的第一杯咖啡" data-src="../assets/gallery-01.jpg">
+        <img src="../assets/gallery-01.jpg" alt="清晨的第一杯咖啡" loading="lazy">
+        <figcaption>
+          <span class="chip-mini">日常</span>
+          <span class="caption-hand">清晨的第一杯咖啡</span>
+        </figcaption>
+      </figure>
+
+      <figure class="photo-card" data-category="日常" data-dom-id="photo-2" data-index="1" tabindex="0" role="button" aria-label="查看第2张：今天的云像棉花糖" data-src="../assets/gallery-02.jpg">
+        <img src="../assets/gallery-02.jpg" alt="今天的云像棉花糖" loading="lazy">
+        <figcaption>
+          <span class="chip-mini">日常</span>
+          <span class="caption-hand">今天的云像棉花糖</span>
+        </figcaption>
+      </figure>
+
+      <figure class="photo-card" data-category="日常" data-dom-id="photo-3" data-index="2" tabindex="0" role="button" aria-label="查看第3张：下班路上的晚霞" data-src="../assets/gallery-03.jpg">
+        <img src="../assets/gallery-03.jpg" alt="下班路上的晚霞" loading="lazy">
+        <figcaption>
+          <span class="chip-mini">日常</span>
+          <span class="caption-hand">下班路上的晚霞</span>
+        </figcaption>
+      </figure>
+
+      <figure class="photo-card" data-category="造型" data-dom-id="photo-4" data-index="3" tabindex="0" role="button" aria-label="查看第4张：换上喜欢的那件衣服" data-src="../assets/gallery-04.jpg">
+        <img src="../assets/gallery-04.jpg" alt="换上喜欢的那件衣服" loading="lazy">
+        <figcaption>
+          <span class="chip-mini">造型</span>
+          <span class="caption-hand">换上喜欢的那件衣服</span>
+        </figcaption>
+      </figure>
+
+      <figure class="photo-card" data-category="造型" data-dom-id="photo-5" data-index="4" tabindex="0" role="button" aria-label="查看第5张：镜子里的自己还不错" data-src="../assets/gallery-05.jpg">
+        <img src="../assets/gallery-05.jpg" alt="镜子里的自己还不错" loading="lazy">
+        <figcaption>
+          <span class="chip-mini">造型</span>
+          <span class="caption-hand">镜子里的自己还不错</span>
+        </figcaption>
+      </figure>
+
+      <figure class="photo-card" data-category="造型" data-dom-id="photo-6" data-index="5" tabindex="0" role="button" aria-label="查看第6张：周末的小小仪式感" data-src="../assets/gallery-06.jpg">
+        <img src="../assets/gallery-06.jpg" alt="周末的小小仪式感" loading="lazy">
+        <figcaption>
+          <span class="chip-mini">造型</span>
+          <span class="caption-hand">周末的小小仪式感</span>
+        </figcaption>
+      </figure>
+
+      <figure class="photo-card" data-category="猫咪" data-dom-id="photo-7" data-index="6" tabindex="0" role="button" aria-label="查看第7张：巷口遇见的小橘猫" data-src="../assets/gallery-07.jpg">
+        <img src="../assets/gallery-07.jpg" alt="巷口遇见的小橘猫" loading="lazy">
+        <figcaption>
+          <span class="chip-mini">猫咪</span>
+          <span class="caption-hand">巷口遇见的小橘猫</span>
+        </figcaption>
+      </figure>
+
+      <figure class="photo-card" data-category="猫咪" data-dom-id="photo-8" data-index="7" tabindex="0" role="button" aria-label="查看第8张：它看了我一眼" data-src="../assets/gallery-08.jpg">
+        <img src="../assets/gallery-08.jpg" alt="它看了我一眼" loading="lazy">
+        <figcaption>
+          <span class="chip-mini">猫咪</span>
+          <span class="caption-hand">它看了我一眼</span>
+        </figcaption>
+      </figure>
+
+      <figure class="photo-card" data-category="猫咪" data-dom-id="photo-9" data-index="8" tabindex="0" role="button" aria-label="查看第9张：猫咪的午睡时间" data-src="../assets/gallery-09.jpg">
+        <img src="../assets/gallery-09.jpg" alt="猫咪的午睡时间" loading="lazy">
+        <figcaption>
+          <span class="chip-mini">猫咪</span>
+          <span class="caption-hand">猫咪的午睡时间</span>
+        </figcaption>
+      </figure>
+
+      <figure class="photo-card" data-category="校园" data-dom-id="photo-10" data-index="9" tabindex="0" role="button" aria-label="查看第10张：图书馆靠窗的位置" data-src="../assets/gallery-10.jpg">
+        <img src="../assets/gallery-10.jpg" alt="图书馆靠窗的位置" loading="lazy">
+        <figcaption>
+          <span class="chip-mini">校园</span>
+          <span class="caption-hand">图书馆靠窗的位置</span>
+        </figcaption>
+      </figure>
+
+      <figure class="photo-card" data-category="校园" data-dom-id="photo-11" data-index="10" tabindex="0" role="button" aria-label="查看第11张：操场上的那棵老树" data-src="../assets/gallery-11.jpg">
+        <img src="../assets/gallery-11.jpg" alt="操场上的那棵老树" loading="lazy">
+        <figcaption>
+          <span class="chip-mini">校园</span>
+          <span class="caption-hand">操场上的那棵老树</span>
+        </figcaption>
+      </figure>
+
+      <figure class="photo-card" data-category="校园" data-dom-id="photo-12" data-index="11" tabindex="0" role="button" aria-label="查看第12张：考试前的最后一杯奶茶" data-src="../assets/gallery-12.jpg">
+        <img src="../assets/gallery-12.jpg" alt="考试前的最后一杯奶茶" loading="lazy">
+        <figcaption>
+          <span class="chip-mini">校园</span>
+          <span class="caption-hand">考试前的最后一杯奶茶</span>
+        </figcaption>
+      </figure>
+
+      <figure class="photo-card" data-category="心情" data-dom-id="photo-13" data-index="12" tabindex="0" role="button" aria-label="查看第13张：今天的天空很温柔" data-src="../assets/gallery-13.jpg">
+        <img src="../assets/gallery-13.jpg" alt="今天的天空很温柔" loading="lazy">
+        <figcaption>
+          <span class="chip-mini">心情</span>
+          <span class="caption-hand">今天的天空很温柔</span>
+        </figcaption>
+      </figure>
+
+      <figure class="photo-card" data-category="心情" data-dom-id="photo-14" data-index="13" tabindex="0" role="button" aria-label="查看第14张：说不清为什么开心" data-src="../assets/gallery-14.jpg">
+        <img src="../assets/gallery-14.jpg" alt="说不清为什么开心" loading="lazy">
+        <figcaption>
+          <span class="chip-mini">心情</span>
+          <span class="caption-hand">说不清为什么开心</span>
+        </figcaption>
+      </figure>
+
+      <figure class="photo-card" data-category="心情" data-dom-id="photo-15" data-index="14" tabindex="0" role="button" aria-label="查看第15张：给自己留一个安静的下午" data-src="../assets/gallery-15.jpg">
+        <img src="../assets/gallery-15.jpg" alt="给自己留一个安静的下午" loading="lazy">
+        <figcaption>
+          <span class="chip-mini">心情</span>
+          <span class="caption-hand">给自己留一个安静的下午</span>
+        </figcaption>
+      </figure>
+
+      <figure class="photo-card" data-category="好物" data-dom-id="photo-16" data-index="15" tabindex="0" role="button" aria-label="查看第16张：新买的小杯子" data-src="../assets/gallery-16.jpg">
+        <img src="../assets/gallery-16.jpg" alt="新买的小杯子" loading="lazy">
+        <figcaption>
+          <span class="chip-mini">好物</span>
+          <span class="caption-hand">新买的小杯子</span>
+        </figcaption>
+      </figure>
+
+      <figure class="photo-card" data-category="好物" data-dom-id="photo-17" data-index="16" tabindex="0" role="button" aria-label="查看第17张：书架上又多了一本" data-src="../assets/gallery-17.jpg">
+        <img src="../assets/gallery-17.jpg" alt="书架上又多了一本" loading="lazy">
+        <figcaption>
+          <span class="chip-mini">好物</span>
+          <span class="caption-hand">书架上又多了一本</span>
+        </figcaption>
+      </figure>
+
+      <figure class="photo-card" data-category="好物" data-dom-id="photo-18" data-index="17" tabindex="0" role="button" aria-label="查看第18张：窗台上的小盆栽" data-src="../assets/gallery-18.jpg">
+        <img src="../assets/gallery-18.jpg" alt="窗台上的小盆栽" loading="lazy">
+        <figcaption>
+          <span class="chip-mini">好物</span>
+          <span class="caption-hand">窗台上的小盆栽</span>
+        </figcaption>
+      </figure>
+
+      <figure class="photo-card" data-category="好物" data-dom-id="photo-19" data-index="18" tabindex="0" role="button" aria-label="查看第19张：最喜欢的笔记本" data-src="../assets/gallery-19.jpg">
+        <img src="../assets/gallery-19.jpg" alt="最喜欢的笔记本" loading="lazy">
+        <figcaption>
+          <span class="chip-mini">好物</span>
+          <span class="caption-hand">最喜欢的笔记本</span>
+        </figcaption>
+      </figure>
+
+      <figure class="photo-card" data-category="好物" data-dom-id="photo-20" data-index="19" tabindex="0" role="button" aria-label="查看第20张：刚到的香薰蜡烛" data-src="../assets/gallery-20.jpg">
+        <img src="../assets/gallery-20.jpg" alt="刚到的香薰蜡烛" loading="lazy">
+        <figcaption>
+          <span class="chip-mini">好物</span>
+          <span class="caption-hand">刚到的香薰蜡烛</span>
+        </figcaption>
+      </figure>
+
+      <figure class="photo-card" data-category="好物" data-dom-id="photo-21" data-index="20" tabindex="0" role="button" aria-label="查看第21张：收藏的小小胸针" data-src="../assets/gallery-21.jpg">
+        <img src="../assets/gallery-21.jpg" alt="收藏的小小胸针" loading="lazy">
+        <figcaption>
+          <span class="chip-mini">好物</span>
+          <span class="caption-hand">收藏的小小胸针</span>
+        </figcaption>
+      </figure>
+
+    </div>
+  </section>
+
+  <!-- 灯箱 -->
+  <div class="lightbox" id="lightbox" data-dom-id="lightbox" role="dialog" aria-modal="true" aria-label="照片预览" aria-hidden="true">
+    <button type="button" class="lb-close" data-dom-id="lightbox-close" aria-label="关闭预览" style="position:absolute;top:var(--s-4);right:var(--s-4);width:44px;height:44px;border-radius:var(--r-md);background:var(--surface);border:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:var(--shadow-2);color:var(--ink);">
+      <i data-lucide="x" style="width:22px;height:22px;"></i>
+    </button>
+    <button type="button" class="lb-nav lb-prev" data-dom-id="lightbox-prev" aria-label="上一张" style="position:absolute;left:var(--s-4);top:50%;transform:translateY(-50%);width:48px;height:48px;border-radius:var(--r-pill);background:var(--surface);border:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:var(--shadow-2);color:var(--ink);">
+      <i data-lucide="chevron-left" style="width:24px;height:24px;"></i>
+    </button>
+    <div class="lb-stage">
+      <img id="lightbox-img" src="" alt="预览照片" />
+    </div>
+    <button type="button" class="lb-nav lb-next" data-dom-id="lightbox-next" aria-label="下一张" style="position:absolute;right:var(--s-4);top:50%;transform:translateY(-50%);width:48px;height:48px;border-radius:var(--r-pill);background:var(--surface);border:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:var(--shadow-2);color:var(--ink);">
+      <i data-lucide="chevron-right" style="width:24px;height:24px;"></i>
+    </button>
+    <p id="lightbox-caption" class="text-foreground" style="position:absolute;left:0;right:0;bottom:var(--s-4);text-align:center;font-family:var(--font-hand);font-size:20px;color:var(--surface);text-shadow:0 1px 6px color-mix(in srgb, var(--ink) 50%, transparent);"></p>
+  </div>
+
+  <!-- 底部 -->
+  <footer class="footer section" role="contentinfo">
+    <p class="text-muted-foreground" style="margin:0 0 6px;font-size:14px;">TA的小世界 · 把每一个舍不得删的瞬间，慢慢攒成一座小小博物馆。</p>
+    <p class="text-muted-foreground" style="margin:0;font-size:12px;opacity:0.7;">© 2026 Fragments of Life · 用心记录每一个温柔瞬间</p>
+  </footer>
+
+  <!-- 组件级样式（令牌化） -->
+  <style>
+    .filter-chip {
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: var(--r-pill);
+      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--ink-2);
+      cursor: pointer;
+      transition: all 0.18s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .filter-chip:hover { border-color: var(--brand-soft); color: var(--brand-ink); background: var(--brand-tint); }
+    .filter-chip:focus-visible { outline: 2px solid var(--brand-strong); outline-offset: 2px; }
+    .filter-chip.is-active {
+      background: var(--brand-strong);
+      color: var(--brand-primary-foreground);
+      border-color: var(--brand-strong);
+      box-shadow: var(--shadow-1);
+    }
+
+    .photo-card { transition: transform 0.22s ease, box-shadow 0.22s ease; }
+    .photo-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-2); }
+    .photo-card:focus-visible { outline: 2px solid var(--brand-strong); outline-offset: 3px; }
+    .photo-card img { transition: transform 0.4s ease; }
+    .photo-card:hover img { transform: scale(1.04); }
+
+    .photo-card figcaption { display: flex; flex-direction: column; gap: 4px; }
+    .chip-mini {
+      display: inline-flex; align-items: center; align-self: flex-start;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.04em;
+      padding: 2px 8px; border-radius: var(--r-sm);
+      background: var(--brand-tint); color: var(--brand-ink);
+    }
+    .caption-hand {
+      font-family: var(--font-hand);
+      font-size: 18px; line-height: 1.3;
+      color: var(--ink);
+    }
+
+    .photo-card.is-hidden { display: none; }
+
+    .lb-close:hover, .lb-nav:hover { background: var(--brand-soft); color: var(--brand-ink); }
+    .lb-close:focus-visible, .lb-nav:focus-visible { outline: 2px solid var(--brand-strong); outline-offset: 2px; }
+
+    .hero-eyebrow, .filter-chip, .photo-card, .lb-close, .lb-nav { -webkit-tap-highlight-color: transparent; }
+  </style>
+
+  <!-- JS 交互 -->
+  <script>
+    (function () {
+      // Lucide 初始化
+      if (window.lucide && typeof window.lucide.createIcons === 'function') {
+        window.lucide.createIcons();
+      }
+
+      var grid = document.getElementById('photo-grid');
+      var cards = grid ? Array.prototype.slice.call(grid.querySelectorAll('.photo-card')) : [];
+      var countEl = document.getElementById('photo-count');
+      var filterBar = document.getElementById('filter-bar');
+      var chips = filterBar ? Array.prototype.slice.call(filterBar.querySelectorAll('.filter-chip')) : [];
+
+      // 筛选
+      var baseCount = cards.length;
+      function applyFilter(filter) {
+        var shown = 0;
+        cards.forEach(function (card) {
+          var cat = card.getAttribute('data-category');
+          var match = (filter === '全部' || cat === filter);
+          if (match) { card.classList.remove('is-hidden'); shown++; }
+          else { card.classList.add('is-hidden'); }
+        });
+        if (countEl) {
+          countEl.textContent = cards.length + '张照片 · 当前显示 ' + shown;
+        }
+      }
+
+      // 动态加载用户上传的照片
+      function createUserPhotoCard(photo) {
+        var fig = document.createElement('figure');
+        fig.className = 'photo-card';
+        fig.setAttribute('data-category', photo.category || '日常');
+        fig.setAttribute('data-dom-id', 'user-photo-' + photo.id);
+        fig.setAttribute('tabindex', '0');
+        fig.setAttribute('role', 'button');
+        fig.setAttribute('aria-label', '查看：' + (photo.title || '用户上传照片'));
+        fig.setAttribute('data-src', photo.url);
+        fig.innerHTML =
+          '<img src="' + photo.url + '" alt="' + (photo.title || '用户上传照片') + '" loading="lazy">' +
+          '<figcaption>' +
+            '<span class="chip-mini">' + (photo.category || '日常') + '</span>' +
+            '<span class="caption-hand">' + (photo.title || '新的碎片') + '</span>' +
+          '</figcaption>';
+        return fig;
+      }
+
+      function bindCardEvents(card) {
+        card.addEventListener('click', function () { openLightbox(card); });
+        card.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openLightbox(card);
+          }
+        });
+      }
+
+      // 异步拉取并插入用户照片（放在最前面）
+      fetch('/api/photos').then(function (r) { return r.ok ? r.json() : null; }).then(function (data) {
+        if (!data || !data.success || !data.photos || data.photos.length === 0) return;
+        var frag = document.createDocumentFragment();
+        data.photos.forEach(function (photo) {
+          var card = createUserPhotoCard(photo);
+          bindCardEvents(card);
+          cards.unshift(card);
+          frag.appendChild(card);
+        });
+        if (grid && grid.firstChild) {
+          grid.insertBefore(frag, grid.firstChild);
+        } else if (grid) {
+          grid.appendChild(frag);
+        }
+        // 重新应用当前筛选
+        var activeChip = chips.filter(function (c) { return c.classList.contains('is-active'); })[0];
+        applyFilter(activeChip ? activeChip.getAttribute('data-filter') : '全部');
+        if (window.lucide) window.lucide.createIcons();
+      }).catch(function (err) {
+        console.warn('加载用户照片失败:', err);
+      });
+
+      chips.forEach(function (chip) {
+        chip.addEventListener('click', function () {
+          chips.forEach(function (c) {
+            c.classList.remove('is-active');
+            c.setAttribute('aria-selected', 'false');
+          });
+          chip.classList.add('is-active');
+          chip.setAttribute('aria-selected', 'true');
+          applyFilter(chip.getAttribute('data-filter'));
+        });
+      });
+
+      // 灯箱
+      var lightbox = document.getElementById('lightbox');
+      var lbImg = document.getElementById('lightbox-img');
+      var lbCaption = document.getElementById('lightbox-caption');
+      var btnClose = document.querySelector('[data-dom-id="lightbox-close"]');
+      var btnPrev = document.querySelector('[data-dom-id="lightbox-prev"]');
+      var btnNext = document.querySelector('[data-dom-id="lightbox-next"]');
+      var currentIndex = 0;
+
+      function visibleCards() {
+        return cards.filter(function (c) { return !c.classList.contains('is-hidden'); });
+      }
+
+      function openLightbox(card) {
+        var list = visibleCards();
+        var idx = list.indexOf(card);
+        if (idx < 0) return;
+        currentIndex = idx;
+        renderLightbox(list);
+        lightbox.classList.add('is-open');
+        lightbox.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        if (btnClose) btnClose.focus();
+      }
+
+      function renderLightbox(list) {
+        var card = list[currentIndex];
+        if (!card) return;
+        var src = card.getAttribute('data-src') || (card.querySelector('img') ? card.querySelector('img').src : '');
+        var cap = card.querySelector('.caption-hand') ? card.querySelector('.caption-hand').textContent : '';
+        lbImg.src = src;
+        lbImg.alt = cap || '预览照片';
+        if (lbCaption) lbCaption.textContent = cap;
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('is-open');
+        lightbox.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        var lastCard = visibleCards()[currentIndex];
+        if (lastCard) lastCard.focus();
+      }
+
+      function step(delta) {
+        var list = visibleCards();
+        if (!list.length) return;
+        currentIndex = (currentIndex + delta + list.length) % list.length;
+        renderLightbox(list);
+      }
+
+      cards.forEach(function (card) {
+        card.addEventListener('click', function () { openLightbox(card); });
+        card.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openLightbox(card);
+          }
+        });
+      });
+
+      if (btnClose) btnClose.addEventListener('click', closeLightbox);
+      if (btnPrev) btnPrev.addEventListener('click', function () { step(-1); });
+      if (btnNext) btnNext.addEventListener('click', function () { step(1); });
+
+      // 点击遮罩关闭
+      lightbox.addEventListener('click', function (e) {
+        if (e.target === lightbox) closeLightbox();
+      });
+
+      // 键盘
+      document.addEventListener('keydown', function (e) {
+        if (!lightbox.classList.contains('is-open')) return;
+        if (e.key === 'Escape') { e.preventDefault(); closeLightbox(); }
+        else if (e.key === 'ArrowLeft') { e.preventDefault(); step(-1); }
+        else if (e.key === 'ArrowRight') { e.preventDefault(); step(1); }
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,841 @@
+{
+  "data": [
+    {
+      "id": "page-index",
+      "title": "TA的小世界",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1785035899000,
+      "canvasData": {
+        "x": 200,
+        "y": 0,
+        "group": 0
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/index.html",
+        "interactions": [
+          {
+            "domId": "cta-gallery",
+            "event": "click",
+            "targetPageId": "page-gallery",
+            "label": "cta-gallery"
+          },
+          {
+            "domId": "cta-login",
+            "event": "click",
+            "targetPageId": "page-auth",
+            "label": "cta-login"
+          },
+          {
+            "domId": "cta-scroll-photos",
+            "event": "click",
+            "targetPageId": "page-index",
+            "label": "cta-scroll-photos"
+          },
+          {
+            "domId": "cta-gallery-2",
+            "event": "click",
+            "targetPageId": "page-gallery",
+            "label": "cta-gallery-2"
+          },
+          {
+            "domId": "filter-全部",
+            "event": "click",
+            "targetPageId": "page-index",
+            "label": "filter-全部"
+          },
+          {
+            "domId": "filter-日常",
+            "event": "click",
+            "targetPageId": "page-index",
+            "label": "filter-日常"
+          },
+          {
+            "domId": "filter-旅行",
+            "event": "click",
+            "targetPageId": "page-index",
+            "label": "filter-旅行"
+          },
+          {
+            "domId": "filter-童年",
+            "event": "click",
+            "targetPageId": "page-index",
+            "label": "filter-童年"
+          },
+          {
+            "domId": "filter-节日",
+            "event": "click",
+            "targetPageId": "page-index",
+            "label": "filter-节日"
+          },
+          {
+            "domId": "filter-小狗",
+            "event": "click",
+            "targetPageId": "page-index",
+            "label": "filter-小狗"
+          },
+          {
+            "domId": "filter-阅读",
+            "event": "click",
+            "targetPageId": "page-index",
+            "label": "filter-阅读"
+          },
+          {
+            "domId": "photo-1",
+            "event": "click",
+            "targetPageId": "page-index",
+            "label": "photo-1",
+            "hideEdge": true
+          },
+          {
+            "domId": "photo-2",
+            "event": "click",
+            "targetPageId": "page-index",
+            "label": "photo-2",
+            "hideEdge": true
+          },
+          {
+            "domId": "photo-3",
+            "event": "click",
+            "targetPageId": "page-index",
+            "label": "photo-3",
+            "hideEdge": true
+          },
+          {
+            "domId": "photo-4",
+            "event": "click",
+            "targetPageId": "page-index",
+            "label": "photo-4",
+            "hideEdge": true
+          },
+          {
+            "domId": "photo-5",
+            "event": "click",
+            "targetPageId": "page-index",
+            "label": "photo-5",
+            "hideEdge": true
+          },
+          {
+            "domId": "photo-6",
+            "event": "click",
+            "targetPageId": "page-index",
+            "label": "photo-6",
+            "hideEdge": true
+          },
+          {
+            "domId": "photo-7",
+            "event": "click",
+            "targetPageId": "page-index",
+            "label": "photo-7",
+            "hideEdge": true
+          },
+          {
+            "domId": "photo-8",
+            "event": "click",
+            "targetPageId": "page-index",
+            "label": "photo-8",
+            "hideEdge": true
+          },
+          {
+            "domId": "photo-9",
+            "event": "click",
+            "targetPageId": "page-index",
+            "label": "photo-9",
+            "hideEdge": true
+          },
+          {
+            "domId": "photo-10",
+            "event": "click",
+            "targetPageId": "page-index",
+            "label": "photo-10",
+            "hideEdge": true
+          },
+          {
+            "domId": "photo-11",
+            "event": "click",
+            "targetPageId": "page-index",
+            "label": "photo-11",
+            "hideEdge": true
+          },
+          {
+            "domId": "photo-12",
+            "event": "click",
+            "targetPageId": "page-index",
+            "label": "photo-12",
+            "hideEdge": true
+          },
+          {
+            "domId": "lightbox",
+            "event": "click",
+            "targetPageId": "page-index",
+            "label": "lightbox"
+          },
+          {
+            "domId": "lightbox-close",
+            "event": "click",
+            "targetPageId": "page-index",
+            "label": "lightbox-close",
+            "hideEdge": true
+          },
+          {
+            "domId": "lightbox-prev",
+            "event": "click",
+            "targetPageId": "page-index",
+            "label": "lightbox-prev"
+          },
+          {
+            "domId": "lightbox-next",
+            "event": "click",
+            "targetPageId": "page-index",
+            "label": "lightbox-next"
+          }
+        ]
+      }
+    },
+    {
+      "id": "page-gallery",
+      "title": "TA的小世界 · 生活碎片",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1785055800000,
+      "canvasData": {
+        "x": 200,
+        "y": 1395,
+        "group": 1
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/gallery.html",
+        "interactions": [
+          {
+            "domId": "back-home",
+            "event": "click",
+            "targetPageId": "page-index",
+            "label": "back-home"
+          },
+          {
+            "domId": "back-home-2",
+            "event": "click",
+            "targetPageId": "page-auth",
+            "label": "back-home-2"
+          },
+          {
+            "domId": "filter-全部",
+            "event": "click",
+            "targetPageId": "page-gallery",
+            "label": "filter-全部"
+          },
+          {
+            "domId": "filter-日常",
+            "event": "click",
+            "targetPageId": "page-gallery",
+            "label": "filter-日常"
+          },
+          {
+            "domId": "filter-造型",
+            "event": "click",
+            "targetPageId": "page-gallery",
+            "label": "filter-造型"
+          },
+          {
+            "domId": "filter-猫咪",
+            "event": "click",
+            "targetPageId": "page-gallery",
+            "label": "filter-猫咪"
+          },
+          {
+            "domId": "filter-校园",
+            "event": "click",
+            "targetPageId": "page-gallery",
+            "label": "filter-校园"
+          },
+          {
+            "domId": "filter-心情",
+            "event": "click",
+            "targetPageId": "page-gallery",
+            "label": "filter-心情"
+          },
+          {
+            "domId": "filter-好物",
+            "event": "click",
+            "targetPageId": "page-gallery",
+            "label": "filter-好物"
+          },
+          {
+            "domId": "photo-1",
+            "event": "click",
+            "targetPageId": "page-gallery",
+            "label": "photo-1",
+            "hideEdge": true
+          },
+          {
+            "domId": "photo-2",
+            "event": "click",
+            "targetPageId": "page-gallery",
+            "label": "photo-2",
+            "hideEdge": true
+          },
+          {
+            "domId": "photo-3",
+            "event": "click",
+            "targetPageId": "page-gallery",
+            "label": "photo-3",
+            "hideEdge": true
+          },
+          {
+            "domId": "photo-4",
+            "event": "click",
+            "targetPageId": "page-gallery",
+            "label": "photo-4",
+            "hideEdge": true
+          },
+          {
+            "domId": "photo-5",
+            "event": "click",
+            "targetPageId": "page-gallery",
+            "label": "photo-5",
+            "hideEdge": true
+          },
+          {
+            "domId": "photo-6",
+            "event": "click",
+            "targetPageId": "page-gallery",
+            "label": "photo-6",
+            "hideEdge": true
+          },
+          {
+            "domId": "photo-7",
+            "event": "click",
+            "targetPageId": "page-gallery",
+            "label": "photo-7",
+            "hideEdge": true
+          },
+          {
+            "domId": "photo-8",
+            "event": "click",
+            "targetPageId": "page-gallery",
+            "label": "photo-8",
+            "hideEdge": true
+          },
+          {
+            "domId": "photo-9",
+            "event": "click",
+            "targetPageId": "page-gallery",
+            "label": "photo-9",
+            "hideEdge": true
+          },
+          {
+            "domId": "photo-10",
+            "event": "click",
+            "targetPageId": "page-gallery",
+            "label": "photo-10",
+            "hideEdge": true
+          },
+          {
+            "domId": "photo-11",
+            "event": "click",
+            "targetPageId": "page-gallery",
+            "label": "photo-11",
+            "hideEdge": true
+          },
+          {
+            "domId": "photo-12",
+            "event": "click",
+            "targetPageId": "page-gallery",
+            "label": "photo-12",
+            "hideEdge": true
+          },
+          {
+            "domId": "photo-13",
+            "event": "click",
+            "targetPageId": "page-gallery",
+            "label": "photo-13",
+            "hideEdge": true
+          },
+          {
+            "domId": "photo-14",
+            "event": "click",
+            "targetPageId": "page-gallery",
+            "label": "photo-14",
+            "hideEdge": true
+          },
+          {
+            "domId": "photo-15",
+            "event": "click",
+            "targetPageId": "page-gallery",
+            "label": "photo-15",
+            "hideEdge": true
+          },
+          {
+            "domId": "photo-16",
+            "event": "click",
+            "targetPageId": "page-gallery",
+            "label": "photo-16",
+            "hideEdge": true
+          },
+          {
+            "domId": "photo-17",
+            "event": "click",
+            "targetPageId": "page-gallery",
+            "label": "photo-17",
+            "hideEdge": true
+          },
+          {
+            "domId": "photo-18",
+            "event": "click",
+            "targetPageId": "page-gallery",
+            "label": "photo-18",
+            "hideEdge": true
+          },
+          {
+            "domId": "photo-19",
+            "event": "click",
+            "targetPageId": "page-gallery",
+            "label": "photo-19",
+            "hideEdge": true
+          },
+          {
+            "domId": "photo-20",
+            "event": "click",
+            "targetPageId": "page-gallery",
+            "label": "photo-20",
+            "hideEdge": true
+          },
+          {
+            "domId": "photo-21",
+            "event": "click",
+            "targetPageId": "page-gallery",
+            "label": "photo-21",
+            "hideEdge": true
+          },
+          {
+            "domId": "lightbox",
+            "event": "click",
+            "targetPageId": "page-gallery",
+            "label": "lightbox"
+          },
+          {
+            "domId": "lightbox-close",
+            "event": "click",
+            "targetPageId": "page-gallery",
+            "label": "lightbox-close",
+            "hideEdge": true
+          },
+          {
+            "domId": "lightbox-prev",
+            "event": "click",
+            "targetPageId": "page-gallery",
+            "label": "lightbox-prev"
+          },
+          {
+            "domId": "lightbox-next",
+            "event": "click",
+            "targetPageId": "page-gallery",
+            "label": "lightbox-next"
+          }
+        ]
+      }
+    },
+    {
+      "id": "page-auth",
+      "title": "TA的小世界 · 登录注册",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1785057000000,
+      "canvasData": {
+        "x": 200,
+        "y": 2980,
+        "group": 2
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/auth.html",
+        "interactions": [
+          {
+            "domId": "tab-login",
+            "event": "click",
+            "targetPageId": "page-auth",
+            "label": "tab-login"
+          },
+          {
+            "domId": "tab-register",
+            "event": "click",
+            "targetPageId": "page-auth",
+            "label": "tab-register"
+          },
+          {
+            "domId": "toggle-password-login",
+            "event": "click",
+            "targetPageId": "page-auth",
+            "label": "toggle-password-login",
+            "hideEdge": true
+          },
+          {
+            "domId": "toggle-password-register",
+            "event": "click",
+            "targetPageId": "page-auth",
+            "label": "toggle-password-register",
+            "hideEdge": true
+          },
+          {
+            "domId": "btn-login",
+            "event": "click",
+            "targetPageId": "page-auth",
+            "label": "btn-login"
+          },
+          {
+            "domId": "btn-register",
+            "event": "click",
+            "targetPageId": "page-auth",
+            "label": "btn-register"
+          },
+          {
+            "domId": "link-to-register",
+            "event": "click",
+            "targetPageId": "page-auth",
+            "label": "link-to-register"
+          },
+          {
+            "domId": "link-to-login",
+            "event": "click",
+            "targetPageId": "page-auth",
+            "label": "link-to-login"
+          },
+          {
+            "domId": "social-wechat",
+            "event": "click",
+            "targetPageId": "page-auth",
+            "label": "social-wechat",
+            "hideEdge": true
+          },
+          {
+            "domId": "social-weibo",
+            "event": "click",
+            "targetPageId": "page-auth",
+            "label": "social-weibo",
+            "hideEdge": true
+          },
+          {
+            "domId": "social-apple",
+            "event": "click",
+            "targetPageId": "page-auth",
+            "label": "social-apple",
+            "hideEdge": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "image-001",
+      "title": "Auth Side Visual",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1785057000000,
+      "canvasData": {
+        "x": 0,
+        "y": 3357
+      },
+      "devMetadata": {
+        "imageSrc": "assets/auth-hero.jpg"
+      }
+    },
+    {
+      "id": "image-002",
+      "title": "Gallery 01",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1785055800000,
+      "canvasData": {
+        "x": 620,
+        "y": 3357
+      },
+      "devMetadata": {
+        "imageSrc": "assets/gallery-01.jpg"
+      }
+    },
+    {
+      "id": "image-003",
+      "title": "Gallery 02",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1785055800000,
+      "canvasData": {
+        "x": 1240,
+        "y": 3357
+      },
+      "devMetadata": {
+        "imageSrc": "assets/gallery-02.jpg"
+      }
+    },
+    {
+      "id": "image-004",
+      "title": "Gallery 03",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1785055800000,
+      "canvasData": {
+        "x": 1860,
+        "y": 3357
+      },
+      "devMetadata": {
+        "imageSrc": "assets/gallery-03.jpg"
+      }
+    },
+    {
+      "id": "image-005",
+      "title": "Gallery 04",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1785055800000,
+      "canvasData": {
+        "x": 2480,
+        "y": 3357
+      },
+      "devMetadata": {
+        "imageSrc": "assets/gallery-04.jpg"
+      }
+    },
+    {
+      "id": "image-006",
+      "title": "Gallery 05",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1785055800000,
+      "canvasData": {
+        "x": 3100,
+        "y": 3357
+      },
+      "devMetadata": {
+        "imageSrc": "assets/gallery-05.jpg"
+      }
+    },
+    {
+      "id": "image-007",
+      "title": "Gallery 06",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1785055800000,
+      "canvasData": {
+        "x": 3720,
+        "y": 3357
+      },
+      "devMetadata": {
+        "imageSrc": "assets/gallery-06.jpg"
+      }
+    },
+    {
+      "id": "image-008",
+      "title": "Gallery 07",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1785055800000,
+      "canvasData": {
+        "x": 4340,
+        "y": 3357
+      },
+      "devMetadata": {
+        "imageSrc": "assets/gallery-07.jpg"
+      }
+    },
+    {
+      "id": "image-009",
+      "title": "Gallery 08",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1785055800000,
+      "canvasData": {
+        "x": 4960,
+        "y": 3357
+      },
+      "devMetadata": {
+        "imageSrc": "assets/gallery-08.jpg"
+      }
+    },
+    {
+      "id": "image-010",
+      "title": "Gallery 09",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1785055800000,
+      "canvasData": {
+        "x": 5580,
+        "y": 3357
+      },
+      "devMetadata": {
+        "imageSrc": "assets/gallery-09.jpg"
+      }
+    },
+    {
+      "id": "image-011",
+      "title": "Gallery 10",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1785055800000,
+      "canvasData": {
+        "x": 6200,
+        "y": 3357
+      },
+      "devMetadata": {
+        "imageSrc": "assets/gallery-10.jpg"
+      }
+    },
+    {
+      "id": "image-012",
+      "title": "Gallery 11",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1785055800000,
+      "canvasData": {
+        "x": 6820,
+        "y": 3357
+      },
+      "devMetadata": {
+        "imageSrc": "assets/gallery-11.jpg"
+      }
+    },
+    {
+      "id": "image-013",
+      "title": "Gallery 12",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1785055800000,
+      "canvasData": {
+        "x": 7440,
+        "y": 3357
+      },
+      "devMetadata": {
+        "imageSrc": "assets/gallery-12.jpg"
+      }
+    },
+    {
+      "id": "image-014",
+      "title": "Gallery 13",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1785055800000,
+      "canvasData": {
+        "x": 8060,
+        "y": 3357
+      },
+      "devMetadata": {
+        "imageSrc": "assets/gallery-13.jpg"
+      }
+    },
+    {
+      "id": "image-015",
+      "title": "Gallery 14",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1785055800000,
+      "canvasData": {
+        "x": 8680,
+        "y": 3357
+      },
+      "devMetadata": {
+        "imageSrc": "assets/gallery-14.jpg"
+      }
+    },
+    {
+      "id": "image-016",
+      "title": "Gallery 15",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1785055800000,
+      "canvasData": {
+        "x": 9300,
+        "y": 3357
+      },
+      "devMetadata": {
+        "imageSrc": "assets/gallery-15.jpg"
+      }
+    },
+    {
+      "id": "image-017",
+      "title": "Gallery 16",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1785055800000,
+      "canvasData": {
+        "x": 9920,
+        "y": 3357
+      },
+      "devMetadata": {
+        "imageSrc": "assets/gallery-16.jpg"
+      }
+    },
+    {
+      "id": "image-018",
+      "title": "Gallery 17",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1785055800000,
+      "canvasData": {
+        "x": 10540,
+        "y": 3357
+      },
+      "devMetadata": {
+        "imageSrc": "assets/gallery-17.jpg"
+      }
+    },
+    {
+      "id": "image-019",
+      "title": "Gallery 18",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1785055800000,
+      "canvasData": {
+        "x": 11160,
+        "y": 3357
+      },
+      "devMetadata": {
+        "imageSrc": "assets/gallery-18.jpg"
+      }
+    },
+    {
+      "id": "image-020",
+      "title": "Gallery 19",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1785055800000,
+      "canvasData": {
+        "x": 11780,
+        "y": 3357
+      },
+      "devMetadata": {
+        "imageSrc": "assets/gallery-19.jpg"
+      }
+    },
+    {
+      "id": "image-021",
+      "title": "Gallery 20",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1785055800000,
+      "canvasData": {
+        "x": 12400,
+        "y": 3357
+      },
+      "devMetadata": {
+        "imageSrc": "assets/gallery-20.jpg"
+      }
+    },
+    {
+      "id": "image-022",
+      "title": "Gallery 21",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1785055800000,
+      "canvasData": {
+        "x": 13020,
+        "y": 3357
+      },
+      "devMetadata": {
+        "imageSrc": "assets/gallery-21.jpg"
+      }
+    }
+  ],
+  "config": {
+    "autoLayout": true,
+    "deviceType": "desktop",
+    "projectName": "TA的小世界",
+    "visualEditorEnabled": true
+  }
+}

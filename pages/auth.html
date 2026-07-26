@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TA的小世界 · 登录注册</title>
+  <meta name="description" content="TA的小世界——把那些舍不得删的瞬间，安放在这里。登录或注册，开始收藏你的碎片。">
+
+  <!-- 1. 设计令牌 -->
+  <style id="theme-vars">
+:root {
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 80px;
+  --r-xs: 2px; --r-sm: 4px; --r-md: 8px; --r-lg: 16px; --r-xl: 24px; --r-pill: 999px;
+  --brand: #E89B8C; --brand-strong: #D77B6A; --brand-soft: #F6D9D1; --brand-tint: #FCEEEA; --brand-ink: #5A2A20;
+  --bg: #FBF7F4; --surface: #FFFFFF; --surface-2: #F6EFEA; --surface-3: #EFE4DC;
+  --ink: #3A2A24; --ink-2: #6B5750; --ink-3: #9C8B83;
+  --line: #EBE0D8; --line-soft: #F3EAE3;
+  --state-success: #7FAE8E; --state-warning: #E0A86A; --state-error: #D96666; --state-info: #7BA3C4;
+  --shadow-1: 0 1px 2px rgba(122, 80, 70, 0.05), 0 1px 1px rgba(122, 80, 70, 0.03);
+  --shadow-2: 0 8px 24px -8px rgba(122, 80, 70, 0.16);
+  --shadow-3: 0 24px 60px -20px rgba(122, 80, 70, 0.28);
+  --font-sans: "Inter", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  --font-display: "Noto Serif SC", "Source Han Serif SC", "Songti SC", Georgia, serif;
+  --font-hand: "Caveat", "Noto Sans SC", cursive;
+  --brand-background: var(--bg); --brand-foreground: var(--ink); --brand-card: var(--surface); --brand-card-foreground: var(--ink);
+  --brand-popover: var(--surface); --brand-popover-foreground: var(--ink);
+  --brand-primary: var(--brand-strong); --brand-primary-foreground: #FFFFFF;
+  --brand-secondary: var(--surface-3); --brand-secondary-foreground: var(--ink-2);
+  --brand-muted: var(--surface-2); --brand-muted-foreground: var(--ink-2);
+  --brand-accent: var(--brand-soft); --brand-accent-foreground: var(--brand-ink);
+  --brand-destructive: var(--state-error); --brand-destructive-foreground: #FFFFFF;
+  --brand-border: var(--line); --brand-input: var(--line); --brand-ring: var(--brand-strong);
+  --brand-radius-sm: var(--r-sm); --brand-radius-md: var(--r-md); --brand-radius-lg: var(--r-lg); --brand-radius-xl: var(--r-xl);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; font-family: var(--font-sans); color: var(--ink); background: var(--bg); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+::selection { background: var(--brand-soft); color: var(--brand-ink); }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: var(--r-pill); border: 2px solid var(--bg); }
+::-webkit-scrollbar-thumb:hover { background: var(--brand-soft); }
+  </style>
+
+  <!-- 2. Tailwind 浏览器运行时 -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
+
+  <!-- 3. Lucide 图标 -->
+  <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+
+  <!-- 4. Tailwind 语义映射 -->
+  <style type="text/tailwindcss">
+@theme inline {
+  --color-background: var(--brand-background);
+  --color-foreground: var(--brand-foreground);
+  --color-card: var(--brand-card);
+  --color-card-foreground: var(--brand-card-foreground);
+  --color-popover: var(--brand-popover);
+  --color-popover-foreground: var(--brand-popover-foreground);
+  --color-primary: var(--brand-primary);
+  --color-primary-foreground: var(--brand-primary-foreground);
+  --color-secondary: var(--brand-secondary);
+  --color-secondary-foreground: var(--brand-secondary-foreground);
+  --color-muted: var(--brand-muted);
+  --color-muted-foreground: var(--brand-muted-foreground);
+  --color-accent: var(--brand-accent);
+  --color-accent-foreground: var(--brand-accent-foreground);
+  --color-destructive: var(--brand-destructive);
+  --color-destructive-foreground: var(--brand-destructive-foreground);
+  --color-border: var(--brand-border);
+  --color-input: var(--brand-input);
+  --color-ring: var(--brand-ring);
+  --radius-sm: var(--brand-radius-sm);
+  --radius-md: var(--brand-radius-md);
+  --radius-lg: var(--brand-radius-lg);
+  --radius-xl: var(--brand-radius-xl);
+}
+@layer base {
+  body { background: var(--brand-background); color: var(--brand-foreground); }
+  td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+  th { @apply whitespace-nowrap; }
+}
+  </style>
+
+  <!-- 5. 语义令牌回退 CSS -->
+  <style id="semantic-token-fallback">
+.bg-background { background-color: var(--brand-background); }
+.text-background { color: var(--brand-background); }
+.border-background { border-color: var(--brand-background); }
+.ring-background { --tw-ring-color: var(--brand-background); }
+.bg-foreground { background-color: var(--brand-foreground); }
+.text-foreground { color: var(--brand-foreground); }
+.border-foreground { border-color: var(--brand-foreground); }
+.ring-foreground { --tw-ring-color: var(--brand-foreground); }
+.bg-card { background-color: var(--brand-card); }
+.text-card { color: var(--brand-card); }
+.border-card { border-color: var(--brand-card); }
+.ring-card { --tw-ring-color: var(--brand-card); }
+.bg-card-foreground { background-color: var(--brand-card-foreground); }
+.text-card-foreground { color: var(--brand-card-foreground); }
+.border-card-foreground { border-color: var(--brand-card-foreground); }
+.ring-card-foreground { --tw-ring-color: var(--brand-card-foreground); }
+.bg-popover { background-color: var(--brand-popover); }
+.text-popover { color: var(--brand-popover); }
+.border-popover { border-color: var(--brand-popover); }
+.ring-popover { --tw-ring-color: var(--brand-popover); }
+.bg-popover-foreground { background-color: var(--brand-popover-foreground); }
+.text-popover-foreground { color: var(--brand-popover-foreground); }
+.border-popover-foreground { border-color: var(--brand-popover-foreground); }
+.ring-popover-foreground { --tw-ring-color: var(--brand-popover-foreground); }
+.bg-primary { background-color: var(--brand-primary); }
+.text-primary { color: var(--brand-primary); }
+.border-primary { border-color: var(--brand-primary); }
+.ring-primary { --tw-ring-color: var(--brand-primary); }
+.bg-primary-foreground { background-color: var(--brand-primary-foreground); }
+.text-primary-foreground { color: var(--brand-primary-foreground); }
+.border-primary-foreground { border-color: var(--brand-primary-foreground); }
+.ring-primary-foreground { --tw-ring-color: var(--brand-primary-foreground); }
+.bg-secondary { background-color: var(--brand-secondary); }
+.text-secondary { color: var(--brand-secondary); }
+.border-secondary { border-color: var(--brand-secondary); }
+.ring-secondary { --tw-ring-color: var(--brand-secondary); }
+.bg-secondary-foreground { background-color: var(--brand-secondary-foreground); }
+.text-secondary-foreground { color: var(--brand-secondary-foreground); }
+.border-secondary-foreground { border-color: var(--brand-secondary-foreground); }
+.ring-secondary-foreground { --tw-ring-color: var(--brand-secondary-foreground); }
+.bg-muted { background-color: var(--brand-muted); }
+.text-muted { color: var(--brand-muted); }
+.border-muted { border-color: var(--brand-muted); }
+.ring-muted { --tw-ring-color: var(--brand-muted); }
+.bg-muted-foreground { background-color: var(--brand-muted-foreground); }
+.text-muted-foreground { color: var(--brand-muted-foreground); }
+.border-muted-foreground { border-color: var(--brand-muted-foreground); }
+.ring-muted-foreground { --tw-ring-color: var(--brand-muted-foreground); }
+.bg-accent { background-color: var(--brand-accent); }
+.text-accent { color: var(--brand-accent); }
+.border-accent { border-color: var(--brand-accent); }
+.ring-accent { --tw-ring-color: var(--brand-accent); }
+.bg-accent-foreground { background-color: var(--brand-accent-foreground); }
+.text-accent-foreground { color: var(--brand-accent-foreground); }
+.border-accent-foreground { border-color: var(--brand-accent-foreground); }
+.ring-accent-foreground { --tw-ring-color: var(--brand-accent-foreground); }
+.bg-destructive { background-color: var(--brand-destructive); }
+.text-destructive { color: var(--brand-destructive); }
+.border-destructive { border-color: var(--brand-destructive); }
+.ring-destructive { --tw-ring-color: var(--brand-destructive); }
+.bg-destructive-foreground { background-color: var(--brand-destructive-foreground); }
+.text-destructive-foreground { color: var(--brand-destructive-foreground); }
+.border-destructive-foreground { border-color: var(--brand-destructive-foreground); }
+.ring-destructive-foreground { --tw-ring-color: var(--brand-destructive-foreground); }
+.bg-border { background-color: var(--brand-border); }
+.text-border { color: var(--brand-border); }
+.border-border { border-color: var(--brand-border); }
+.ring-border { --tw-ring-color: var(--brand-border); }
+.bg-input { background-color: var(--brand-input); }
+.text-input { color: var(--brand-input); }
+.border-input { border-color: var(--brand-input); }
+.ring-input { --tw-ring-color: var(--brand-input); }
+.bg-ring { background-color: var(--brand-ring); }
+.text-ring { color: var(--brand-ring); }
+.border-ring { border-color: var(--brand-ring); }
+.ring-ring { --tw-ring-color: var(--brand-ring); }
+  </style>
+
+  <!-- 6. [data-icon] 基础样式 + .no-scrollbar 工具类 -->
+  <style>
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+[data-icon] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  background-color: currentColor;
+}
+  </style>
+
+  <!-- 7. 关键布局 CSS -->
+  <style id="critical-layout">
+/* ===== 双栏布局骨架 ===== */
+.auth-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* ===== 左侧品牌视觉区 ===== */
+#brand-side {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  isolation: isolate;
+}
+#brand-side .brand-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+#brand-side .brand-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(135deg,
+      color-mix(in srgb, var(--brand-ink) 78%, transparent) 0%,
+      color-mix(in srgb, var(--brand-ink) 55%, transparent) 45%,
+      color-mix(in srgb, var(--brand-strong) 45%, transparent) 100%),
+    linear-gradient(180deg,
+      color-mix(in srgb, var(--brand-soft) 18%, transparent) 0%,
+      color-mix(in srgb, var(--brand-ink) 62%, transparent) 100%);
+}
+#brand-side .brand-content {
+  position: relative;
+  z-index: 2;
+  padding: var(--s-7) var(--s-6);
+  max-width: 480px;
+  text-align: center;
+  color: var(--surface);
+}
+
+/* ===== 右侧表单区 ===== */
+#form-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--s-6) var(--s-4);
+  min-height: 100vh;
+  background: var(--bg);
+}
+.form-card {
+  width: 100%;
+  max-width: 420px;
+}
+
+/* ===== 返回链接 ===== */
+.back-home {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-1);
+  color: var(--ink-2);
+  font-size: 14px;
+  text-decoration: none;
+  margin-bottom: var(--s-6);
+  transition: color .2s ease;
+}
+.back-home:hover { color: var(--brand-strong); }
+.back-home [data-lucide] { width: 16px; height: 16px; }
+
+/* ===== 标题区 ===== */
+.title-block { margin-bottom: var(--s-5); }
+.title-block h1 {
+  font-family: var(--font-display);
+  font-size: 32px;
+  line-height: 1.2;
+  color: var(--ink);
+  margin: 0 0 var(--s-2) 0;
+  letter-spacing: 0.5px;
+}
+.title-block p {
+  font-size: 14px;
+  color: var(--ink-2);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* ===== Tab 切换 ===== */
+#auth-tabs {
+  display: flex;
+  gap: var(--s-5);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: var(--s-5);
+}
+#auth-tabs [role="tab"] {
+  position: relative;
+  padding: var(--s-2) 0;
+  font-size: 15px;
+  color: var(--ink-3);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  transition: color .2s ease;
+}
+#auth-tabs [role="tab"]:hover { color: var(--ink-2); }
+#auth-tabs [role="tab"][aria-selected="true"] {
+  color: var(--brand-strong);
+}
+#auth-tabs [role="tab"]::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--brand-strong);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform .25s ease;
+}
+#auth-tabs [role="tab"][aria-selected="true"]::after {
+  transform: scaleX(1);
+}
+
+/* ===== 输入框组 ===== */
+.field { margin-bottom: var(--s-4); }
+.field-label {
+  display: block;
+  font-size: 13px;
+  color: var(--ink-2);
+  margin-bottom: var(--s-2);
+  font-weight: 500;
+}
+.input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.input-wrap .input-icon {
+  position: absolute;
+  left: var(--s-3);
+  color: var(--ink-3);
+  display: inline-flex;
+  pointer-events: none;
+}
+.input-wrap .input-icon [data-lucide] { width: 18px; height: 18px; }
+.input-wrap .input-toggle {
+  position: absolute;
+  right: var(--s-3);
+  color: var(--ink-3);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  padding: var(--s-1);
+  border-radius: var(--r-sm);
+  transition: color .2s ease, background .2s ease;
+}
+.input-wrap .input-toggle:hover { color: var(--brand-strong); background: var(--brand-tint); }
+.input-wrap .input-toggle [data-lucide] { width: 18px; height: 18px; }
+.input-wrap input {
+  width: 100%;
+  height: 44px;
+  padding: 0 var(--s-7) 0 calc(var(--s-3) + 18px + var(--s-2));
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 14px;
+  font-family: var(--font-sans);
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+.input-wrap input::placeholder { color: var(--ink-3); }
+.input-wrap input:focus {
+  outline: none;
+  border-color: var(--brand-strong);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-strong) 15%, transparent);
+}
+
+/* ===== 复选框行 ===== */
+.form-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+  margin-bottom: var(--s-4);
+  flex-wrap: wrap;
+}
+.checkbox-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  font-size: 13px;
+  color: var(--ink-2);
+  cursor: pointer;
+}
+.checkbox-wrap input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--brand-strong);
+  cursor: pointer;
+}
+.link-text {
+  font-size: 13px;
+  color: var(--brand-strong);
+  text-decoration: none;
+  transition: opacity .2s ease;
+}
+.link-text:hover { opacity: 0.8; }
+.form-row .terms {
+  font-size: 13px;
+  color: var(--ink-2);
+  line-height: 1.5;
+}
+.form-row .terms a { color: var(--brand-strong); text-decoration: none; }
+.form-row .terms a:hover { text-decoration: underline; }
+
+/* ===== 主按钮 ===== */
+.btn-primary {
+  width: 100%;
+  height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  background: var(--brand-strong);
+  color: var(--surface);
+  border: none;
+  border-radius: var(--r-md);
+  font-size: 15px;
+  font-weight: 600;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition: background .2s ease, transform .1s ease, box-shadow .2s ease;
+  box-shadow: var(--shadow-1);
+}
+.btn-primary:hover { background: var(--brand-ink); box-shadow: var(--shadow-2); }
+.btn-primary:active { transform: translateY(1px); }
+.btn-primary [data-lucide] { width: 18px; height: 18px; }
+
+/* ===== 分隔线 ===== */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  margin: var(--s-5) 0;
+  color: var(--ink-3);
+  font-size: 12px;
+}
+.divider::before, .divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+/* ===== 社交登录按钮组 ===== */
+.social-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--s-3);
+}
+.social-btn {
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  color: var(--ink-2);
+  font-size: 13px;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition: border-color .2s ease, color .2s ease, background .2s ease;
+}
+.social-btn:hover {
+  border-color: var(--brand-soft);
+  color: var(--brand-strong);
+  background: var(--brand-tint);
+}
+.social-btn [data-lucide] { width: 18px; height: 18px; }
+
+/* ===== 底部切换链接 ===== */
+.switch-link {
+  text-align: center;
+  margin-top: var(--s-5);
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.switch-link button {
+  color: var(--brand-strong);
+  background: transparent;
+  border: none;
+  font-size: 13px;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  padding: 0 0 0 var(--s-1);
+  text-decoration: none;
+}
+.switch-link button:hover { text-decoration: underline; }
+
+/* ===== 页脚版权 ===== */
+.auth-footer {
+  text-align: center;
+  font-size: 12px;
+  color: var(--ink-3);
+  margin-top: var(--s-6);
+  line-height: 1.6;
+}
+
+/* ===== Toast ===== */
+.toast {
+  position: fixed;
+  top: var(--s-5);
+  left: 50%;
+  transform: translateX(-50%) translateY(-20px);
+  background: var(--state-success);
+  color: var(--surface);
+  padding: var(--s-3) var(--s-4);
+  border-radius: var(--r-md);
+  font-size: 14px;
+  box-shadow: var(--shadow-2);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s ease, transform .25s ease;
+  z-index: 100;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.toast [data-lucide] { width: 16px; height: 16px; }
+
+/* ===== 表单显隐 ===== */
+.hidden-form { display: none !important; }
+
+/* ===== 品牌区文字 ===== */
+.brand-title {
+  font-family: var(--font-display);
+  font-size: 44px;
+  line-height: 1.15;
+  margin: 0 0 var(--s-3) 0;
+  letter-spacing: 2px;
+  color: var(--surface);
+}
+.brand-subtitle {
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--brand-soft);
+  margin: 0 0 var(--s-5) 0;
+  opacity: 0.92;
+}
+.brand-tagline {
+  font-family: var(--font-hand);
+  font-size: 22px;
+  line-height: 1.5;
+  color: var(--surface);
+  margin: 0 0 var(--s-6) 0;
+  opacity: 0.95;
+}
+.brand-foot {
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: var(--brand-soft);
+  opacity: 0.78;
+}
+
+/* ===== 响应式：移动端单栏 ===== */
+@media (max-width: 900px) {
+  .auth-shell {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  #brand-side {
+    min-height: 0;
+    height: 220px;
+  }
+  #brand-side .brand-content {
+    padding: var(--s-4);
+    max-width: 100%;
+  }
+  .brand-title { font-size: 28px; }
+  .brand-subtitle { font-size: 10px; letter-spacing: 2px; }
+  .brand-tagline { font-size: 18px; margin-bottom: var(--s-3); }
+  .brand-foot { display: none; }
+  #form-side {
+    min-height: 0;
+    padding: var(--s-5) var(--s-4);
+  }
+  .social-grid { gap: var(--s-2); }
+  .social-btn { font-size: 12px; }
+}
+  </style>
+</head>
+
+<body class="min-h-screen font-sans antialiased">
+
+  <div class="auth-shell">
+
+    <!-- ===== 左侧品牌视觉区 ===== -->
+    <aside id="brand-side" aria-label="品牌视觉">
+      <img class="brand-bg" src="../assets/auth-hero.jpg" alt="" aria-hidden="true">
+      <div class="brand-overlay" aria-hidden="true"></div>
+      <div class="brand-content">
+        <h2 class="brand-title">TA的小世界</h2>
+        <p class="brand-subtitle">A SMALL WORLD OF MEMORIES</p>
+        <p class="brand-tagline">把那些舍不得删的瞬间，安放在这里。</p>
+        <p class="brand-foot">二零二六 · 暖光收藏</p>
+      </div>
+    </aside>
+
+    <!-- ===== 右侧表单区 ===== -->
+    <section id="form-side" aria-label="登录注册">
+
+      <div class="form-card">
+
+        <!-- 返回首页 -->
+        <a class="back-home" href="index.html" aria-label="返回首页">
+          <i data-lucide="arrow-left"></i>
+          <span>返回首页</span>
+        </a>
+
+        <!-- 标题区 -->
+        <div class="title-block">
+          <h1 id="auth-title">欢迎回来</h1>
+          <p id="auth-subtitle">登录以继续收藏你的碎片</p>
+        </div>
+
+        <!-- Tab 切换 -->
+        <div id="auth-tabs" role="tablist" aria-label="登录或注册">
+          <button type="button" role="tab" id="tab-login" data-dom-id="tab-login" aria-selected="true" aria-controls="login-form">登录</button>
+          <button type="button" role="tab" id="tab-register" data-dom-id="tab-register" aria-selected="false" aria-controls="register-form">注册</button>
+        </div>
+
+        <!-- 登录表单 -->
+        <form id="login-form" role="tabpanel" aria-labelledby="tab-login" novalidate>
+
+          <div class="field">
+            <label class="field-label" for="login-email">邮箱</label>
+            <div class="input-wrap">
+              <span class="input-icon"><i data-lucide="mail"></i></span>
+              <input id="login-email" type="email" name="email" placeholder="邮箱地址" autocomplete="email" required>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="login-password">密码</label>
+            <div class="input-wrap">
+              <span class="input-icon"><i data-lucide="lock"></i></span>
+              <input id="login-password" type="password" name="password" placeholder="密码" autocomplete="current-password" required>
+              <button type="button" class="input-toggle" data-dom-id="toggle-password-login" aria-label="显示或隐藏密码" aria-pressed="false">
+                <i data-lucide="eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label class="checkbox-wrap">
+              <input type="checkbox" name="remember">
+              <span>记住我</span>
+            </label>
+            <a class="link-text" href="#" aria-label="忘记密码">忘记密码？</a>
+          </div>
+
+          <button type="submit" class="btn-primary" data-dom-id="btn-login">
+            <i data-lucide="log-in"></i>
+            <span>登录</span>
+          </button>
+
+          <div class="divider">或使用第三方登录</div>
+
+          <div class="social-grid">
+            <button type="button" class="social-btn" data-dom-id="social-wechat" aria-label="使用微信登录">
+              <i data-lucide="message-circle"></i>
+              <span>微信</span>
+            </button>
+            <button type="button" class="social-btn" data-dom-id="social-weibo" aria-label="使用微博登录">
+              <i data-lucide="globe"></i>
+              <span>微博</span>
+            </button>
+            <button type="button" class="social-btn" data-dom-id="social-apple" aria-label="使用 Apple 登录">
+              <i data-lucide="smartphone"></i>
+              <span>Apple</span>
+            </button>
+          </div>
+
+          <p class="switch-link">
+            还没有账号？
+            <button type="button" data-dom-id="link-to-register">立即注册</button>
+          </p>
+        </form>
+
+        <!-- 注册表单 -->
+        <form id="register-form" class="hidden-form" role="tabpanel" aria-labelledby="tab-register" novalidate>
+
+          <div class="field">
+            <label class="field-label" for="register-nickname">昵称</label>
+            <div class="input-wrap">
+              <span class="input-icon"><i data-lucide="user"></i></span>
+              <input id="register-nickname" type="text" name="nickname" placeholder="你的昵称" autocomplete="nickname" required>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="register-email">邮箱</label>
+            <div class="input-wrap">
+              <span class="input-icon"><i data-lucide="mail"></i></span>
+              <input id="register-email" type="email" name="email" placeholder="邮箱地址" autocomplete="email" required>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="register-password">密码</label>
+            <div class="input-wrap">
+              <span class="input-icon"><i data-lucide="lock"></i></span>
+              <input id="register-password" type="password" name="password" placeholder="设置密码（至少6位）" autocomplete="new-password" minlength="6" required>
+              <button type="button" class="input-toggle" data-dom-id="toggle-password-register" aria-label="显示或隐藏密码" aria-pressed="false">
+                <i data-lucide="eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="register-confirm">确认密码</label>
+            <div class="input-wrap">
+              <span class="input-icon"><i data-lucide="lock-check"></i></span>
+              <input id="register-confirm" type="password" name="confirm" placeholder="再次输入密码" autocomplete="new-password" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label class="checkbox-wrap terms">
+              <input type="checkbox" name="agree" required>
+              <span>我已阅读并同意<a href="#">《用户协议》</a>和<a href="#">《隐私政策》</a></span>
+            </label>
+          </div>
+
+          <button type="submit" class="btn-primary" data-dom-id="btn-register">
+            <i data-lucide="user-plus"></i>
+            <span>创建账号</span>
+          </button>
+
+          <p class="switch-link">
+            已有账号？
+            <button type="button" data-dom-id="link-to-login">立即登录</button>
+          </p>
+        </form>
+
+        <!-- 页脚版权 -->
+        <p class="auth-footer">© 2026 TA的小世界 · 温暖收藏每一个日常</p>
+
+      </div>
+    </section>
+  </div>
+
+  <!-- Toast 容器 -->
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <i data-lucide="check-circle-2"></i>
+    <span id="toast-text">操作成功</span>
+  </div>
+
+  <script>
+    // ===== Lucide 初始化 =====
+    if (window.lucide && typeof window.lucide.createIcons === 'function') {
+      window.lucide.createIcons();
+    }
+
+    (function () {
+      var tabLogin = document.querySelector('[data-dom-id="tab-login"]');
+      var tabRegister = document.querySelector('[data-dom-id="tab-register"]');
+      var loginForm = document.getElementById('login-form');
+      var registerForm = document.getElementById('register-form');
+      var titleEl = document.getElementById('auth-title');
+      var subtitleEl = document.getElementById('auth-subtitle');
+
+      var TEXT = {
+        login: { title: '欢迎回来', subtitle: '登录以继续收藏你的碎片' },
+        register: { title: '创建账号', subtitle: '注册开始记录你的小世界' }
+      };
+
+      // ===== Tab / 表单切换 =====
+      function switchTo(mode) {
+        var isLogin = mode === 'login';
+        if (tabLogin) tabLogin.setAttribute('aria-selected', String(isLogin));
+        if (tabRegister) tabRegister.setAttribute('aria-selected', String(!isLogin));
+        if (loginForm) loginForm.classList.toggle('hidden-form', !isLogin);
+        if (registerForm) registerForm.classList.toggle('hidden-form', isLogin);
+        if (titleEl) titleEl.textContent = TEXT[mode].title;
+        if (subtitleEl) subtitleEl.textContent = TEXT[mode].subtitle;
+      }
+
+      if (tabLogin) tabLogin.addEventListener('click', function () { switchTo('login'); });
+      if (tabRegister) tabRegister.addEventListener('click', function () { switchTo('register'); });
+
+      var linkToRegister = document.querySelector('[data-dom-id="link-to-register"]');
+      var linkToLogin = document.querySelector('[data-dom-id="link-to-login"]');
+      if (linkToRegister) linkToRegister.addEventListener('click', function () { switchTo('register'); });
+      if (linkToLogin) linkToLogin.addEventListener('click', function () { switchTo('login'); });
+
+      // ===== 密码显隐切换 =====
+      function bindPasswordToggle(domId, inputId) {
+        var btn = document.querySelector('[data-dom-id="' + domId + '"]');
+        var input = document.getElementById(inputId);
+        if (!btn || !input) return;
+        btn.addEventListener('click', function () {
+          var isPwd = input.getAttribute('type') === 'password';
+          input.setAttribute('type', isPwd ? 'text' : 'password');
+          btn.setAttribute('aria-pressed', String(isPwd));
+          // 更新图标
+          var iconWrapper = btn.querySelector('[data-lucide]');
+          if (iconWrapper) {
+            var newIcon = document.createElement('i');
+            newIcon.setAttribute('data-lucide', isPwd ? 'eye-off' : 'eye');
+            iconWrapper.replaceWith(newIcon);
+            if (window.lucide) window.lucide.createIcons();
+          }
+        });
+      }
+      bindPasswordToggle('toggle-password-login', 'login-password');
+      bindPasswordToggle('toggle-password-register', 'register-password');
+
+      // ===== Toast =====
+      var toastEl = document.getElementById('toast');
+      var toastText = document.getElementById('toast-text');
+      var toastTimer = null;
+      function showToast(msg) {
+        if (!toastEl) return;
+        if (toastText) toastText.textContent = msg;
+        toastEl.classList.add('show');
+        if (toastTimer) clearTimeout(toastTimer);
+        toastTimer = setTimeout(function () {
+          toastEl.classList.remove('show');
+        }, 2600);
+      }
+
+      // ===== 表单提交 =====
+      if (loginForm) {
+        loginForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          showToast('登录成功，正在进入你的小世界…');
+          setTimeout(function () { window.location.href = 'index.html'; }, 1200);
+        });
+      }
+      if (registerForm) {
+        registerForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var pwd = registerForm.querySelector('[name="password"]');
+          var confirm = registerForm.querySelector('[name="confirm"]');
+          if (pwd && confirm && pwd.value !== confirm.value) {
+            showToast('两次输入的密码不一致');
+            return;
+          }
+          showToast('账号创建成功，欢迎加入 TA的小世界');
+          setTimeout(function () { window.location.href = 'index.html'; }, 1400);
+        });
+      }
+
+      // ===== 社交登录占位 =====
+      var socialLabels = {
+        'social-wechat': '微信登录',
+        'social-weibo': '微博登录',
+        'social-apple': 'Apple 登录'
+      };
+      Object.keys(socialLabels).forEach(function (id) {
+        var btn = document.querySelector('[data-dom-id="' + id + '"]');
+        if (btn) btn.addEventListener('click', function () { showToast(socialLabels[id] + ' 即将开放'); });
+      });
+    })();
+  </script>
+</body>
+</html>

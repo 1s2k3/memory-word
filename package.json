@@ -1,0 +1,10 @@
+{
+  "name": "memory-world",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "TA的小世界 — 收藏舍不得删的瞬间",
+  "dependencies": {
+    "@vercel/blob": "^1.0.0"
+  }
+}

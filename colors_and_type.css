@@ -1,0 +1,111 @@
+/* ============================================================
+   Memory World — Warm Healing Refined Theme
+   Single brand hue: soft coral / warm peach
+   ============================================================ */
+
+:root {
+  /* ---- Spacing (8pt grid) ---- */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
+  --s-7: 48px;
+  --s-8: 80px;
+
+  /* ---- Radius scale ---- */
+  --r-xs: 2px;
+  --r-sm: 4px;
+  --r-md: 8px;
+  --r-lg: 16px;
+  --r-xl: 24px;
+  --r-pill: 999px;
+
+  /* ---- Brand primary (single hue: warm coral) ---- */
+  --brand: #E89B8C;
+  --brand-strong: #D77B6A;
+  --brand-soft: #F6D9D1;
+  --brand-tint: #FCEEEA;
+  --brand-ink: #5A2A20;
+
+  /* ---- Surfaces ---- */
+  --bg: #FBF7F4;
+  --surface: #FFFFFF;
+  --surface-2: #F6EFEA;
+  --surface-3: #EFE4DC;
+
+  /* ---- Ink (text) ---- */
+  --ink: #3A2A24;
+  --ink-2: #6B5750;
+  --ink-3: #9C8B83;
+
+  /* ---- Lines ---- */
+  --line: #EBE0D8;
+  --line-soft: #F3EAE3;
+
+  /* ---- State colors (semantic only) ---- */
+  --state-success: #7FAE8E;
+  --state-warning: #E0A86A;
+  --state-error: #D96666;
+  --state-info: #7BA3C4;
+
+  /* ---- Shadows ---- */
+  --shadow-1: 0 1px 2px rgba(122, 80, 70, 0.05), 0 1px 1px rgba(122, 80, 70, 0.03);
+  --shadow-2: 0 8px 24px -8px rgba(122, 80, 70, 0.16);
+  --shadow-3: 0 24px 60px -20px rgba(122, 80, 70, 0.28);
+
+  /* ---- Typography ---- */
+  --font-sans: "Inter", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  --font-display: "Noto Serif SC", "Source Han Serif SC", "Songti SC", Georgia, serif;
+  --font-hand: "Caveat", "Noto Sans SC", cursive;
+
+  /* ---- Semantic aliases for apply-html-head-contract.mjs ---- */
+  --brand-background: var(--bg);
+  --brand-foreground: var(--ink);
+  --brand-card: var(--surface);
+  --brand-card-foreground: var(--ink);
+  --brand-popover: var(--surface);
+  --brand-popover-foreground: var(--ink);
+  --brand-primary: var(--brand-strong);
+  --brand-primary-foreground: #FFFFFF;
+  --brand-secondary: var(--surface-3);
+  --brand-secondary-foreground: var(--ink-2);
+  --brand-muted: var(--surface-2);
+  --brand-muted-foreground: var(--ink-2);
+  --brand-accent: var(--brand-soft);
+  --brand-accent-foreground: var(--brand-ink);
+  --brand-destructive: var(--state-error);
+  --brand-destructive-foreground: #FFFFFF;
+  --brand-border: var(--line);
+  --brand-input: var(--line);
+  --brand-ring: var(--brand-strong);
+  --brand-radius-sm: var(--r-sm);
+  --brand-radius-md: var(--r-md);
+  --brand-radius-lg: var(--r-lg);
+  --brand-radius-xl: var(--r-xl);
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--brand-soft);
+  color: var(--brand-ink);
+}
+
+/* Thin warm scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: var(--r-pill); border: 2px solid var(--bg); }
+::-webkit-scrollbar-thumb:hover { background: var(--brand-soft); }

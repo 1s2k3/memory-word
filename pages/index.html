@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TA的小世界 · A Small World</title>
+  <meta name="description" content="这里收藏着舍不得删的瞬间——一次日出、一杯凉掉的咖啡、一只路过的橘猫、一个突然冒出来的念头。它们拼在一起，就是我。">
+
+  <!-- 1. 设计令牌 -->
+  <style id="theme-vars">
+    :root {
+      --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 80px;
+      --r-xs: 2px; --r-sm: 4px; --r-md: 8px; --r-lg: 16px; --r-xl: 24px; --r-pill: 999px;
+      --brand: #E89B8C; --brand-strong: #D77B6A; --brand-soft: #F6D9D1; --brand-tint: #FCEEEA; --brand-ink: #5A2A20;
+      --bg: #FBF7F4; --surface: #FFFFFF; --surface-2: #F6EFEA; --surface-3: #EFE4DC;
+      --ink: #3A2A24; --ink-2: #6B5750; --ink-3: #9C8B83;
+      --line: #EBE0D8; --line-soft: #F3EAE3;
+      --state-success: #7FAE8E; --state-warning: #E0A86A; --state-error: #D96666; --state-info: #7BA3C4;
+      --shadow-1: 0 1px 2px rgba(122, 80, 70, 0.05), 0 1px 1px rgba(122, 80, 70, 0.03);
+      --shadow-2: 0 8px 24px -8px rgba(122, 80, 70, 0.16);
+      --shadow-3: 0 24px 60px -20px rgba(122, 80, 70, 0.28);
+      --font-sans: "Inter", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+      --font-display: "Noto Serif SC", "Source Han Serif SC", "Songti SC", Georgia, serif;
+      --font-hand: "Caveat", "Noto Sans SC", cursive;
+      --brand-background: var(--bg); --brand-foreground: var(--ink); --brand-card: var(--surface); --brand-card-foreground: var(--ink);
+      --brand-popover: var(--surface); --brand-popover-foreground: var(--ink);
+      --brand-primary: var(--brand-strong); --brand-primary-foreground: #FFFFFF;
+      --brand-secondary: var(--surface-3); --brand-secondary-foreground: var(--ink-2);
+      --brand-muted: var(--surface-2); --brand-muted-foreground: var(--ink-2);
+      --brand-accent: var(--brand-soft); --brand-accent-foreground: var(--brand-ink);
+      --brand-destructive: var(--state-error); --brand-destructive-foreground: #FFFFFF;
+      --brand-border: var(--line); --brand-input: var(--line); --brand-ring: var(--brand-strong);
+      --brand-radius-sm: var(--r-sm); --brand-radius-md: var(--r-md); --brand-radius-lg: var(--r-lg); --brand-radius-xl: var(--r-xl);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: var(--font-sans); color: var(--ink); background: var(--bg); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+    ::selection { background: var(--brand-soft); color: var(--brand-ink); }
+    ::-webkit-scrollbar { width: 10px; height: 10px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: var(--r-pill); border: 2px solid var(--bg); }
+    ::-webkit-scrollbar-thumb:hover { background: var(--brand-soft); }
+  </style>
+
+  <!-- 2. Tailwind 浏览器运行时 -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
+
+  <!-- 3. Lucide 图标 -->
+  <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+
+  <!-- 4. Tailwind 语义映射 -->
+  <style type="text/tailwindcss">
+    @theme inline {
+      --color-background: var(--brand-background);
+      --color-foreground: var(--brand-foreground);
+      --color-card: var(--brand-card);
+      --color-card-foreground: var(--brand-card-foreground);
+      --color-popover: var(--brand-popover);
+      --color-popover-foreground: var(--brand-popover-foreground);
+      --color-primary: var(--brand-primary);
+      --color-primary-foreground: var(--brand-primary-foreground);
+      --color-secondary: var(--brand-secondary);
+      --color-secondary-foreground: var(--brand-secondary-foreground);
+      --color-muted: var(--brand-muted);
+      --color-muted-foreground: var(--brand-muted-foreground);
+      --color-accent: var(--brand-accent);
+      --color-accent-foreground: var(--brand-accent-foreground);
+      --color-destructive: var(--brand-destructive);
+      --color-destructive-foreground: var(--brand-destructive-foreground);
+      --color-border: var(--brand-border);
+      --color-input: var(--brand-input);
+      --color-ring: var(--brand-ring);
+      --radius-sm: var(--brand-radius-sm);
+      --radius-md: var(--brand-radius-md);
+      --radius-lg: var(--brand-radius-lg);
+      --radius-xl: var(--brand-radius-xl);
+    }
+    @layer base {
+      body { background: var(--brand-background); color: var(--brand-foreground); }
+      td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+      th { @apply whitespace-nowrap; }
+    }
+  </style>
+
+  <!-- 5. 语义令牌回退 -->
+  <style id="semantic-token-fallback">
+    .bg-background { background-color: var(--brand-background); }
+    .bg-foreground { background-color: var(--brand-foreground); }
+    .text-background { color: var(--brand-background); }
+    .text-foreground { color: var(--brand-foreground); }
+    .border-background { border-color: var(--brand-background); }
+    .ring-background { --tw-ring-color: var(--brand-background); }
+    .bg-card { background-color: var(--brand-card); }
+    .bg-card-foreground { background-color: var(--brand-card-foreground); }
+    .text-card { color: var(--brand-card); }
+    .text-card-foreground { color: var(--brand-card-foreground); }
+    .border-card { border-color: var(--brand-card); }
+    .ring-card { --tw-ring-color: var(--brand-card); }
+    .bg-popover { background-color: var(--brand-popover); }
+    .bg-popover-foreground { background-color: var(--brand-popover-foreground); }
+    .text-popover { color: var(--brand-popover); }
+    .text-popover-foreground { color: var(--brand-popover-foreground); }
+    .border-popover { border-color: var(--brand-popover); }
+    .ring-popover { --tw-ring-color: var(--brand-popover); }
+    .bg-primary { background-color: var(--brand-primary); }
+    .bg-primary-foreground { background-color: var(--brand-primary-foreground); }
+    .text-primary { color: var(--brand-primary); }
+    .text-primary-foreground { color: var(--brand-primary-foreground); }
+    .border-primary { border-color: var(--brand-primary); }
+    .ring-primary { --tw-ring-color: var(--brand-primary); }
+    .bg-secondary { background-color: var(--brand-secondary); }
+    .bg-secondary-foreground { background-color: var(--brand-secondary-foreground); }
+    .text-secondary { color: var(--brand-secondary); }
+    .text-secondary-foreground { color: var(--brand-secondary-foreground); }
+    .border-secondary { border-color: var(--brand-secondary); }
+    .ring-secondary { --tw-ring-color: var(--brand-secondary); }
+    .bg-muted { background-color: var(--brand-muted); }
+    .bg-muted-foreground { background-color: var(--brand-muted-foreground); }
+    .text-muted { color: var(--brand-muted); }
+    .text-muted-foreground { color: var(--brand-muted-foreground); }
+    .border-muted { border-color: var(--brand-muted); }
+    .ring-muted { --tw-ring-color: var(--brand-muted); }
+    .bg-accent { background-color: var(--brand-accent); }
+    .bg-accent-foreground { background-color: var(--brand-accent-foreground); }
+    .text-accent { color: var(--brand-accent); }
+    .text-accent-foreground { color: var(--brand-accent-foreground); }
+    .border-accent { border-color: var(--brand-accent); }
+    .ring-accent { --tw-ring-color: var(--brand-accent); }
+    .bg-destructive { background-color: var(--brand-destructive); }
+    .bg-destructive-foreground { background-color: var(--brand-destructive-foreground); }
+    .text-destructive { color: var(--brand-destructive); }
+    .text-destructive-foreground { color: var(--brand-destructive-foreground); }
+    .border-destructive { border-color: var(--brand-destructive); }
+    .ring-destructive { --tw-ring-color: var(--brand-destructive); }
+    .bg-border { background-color: var(--brand-border); }
+    .text-border { color: var(--brand-border); }
+    .border-border { border-color: var(--brand-border); }
+    .bg-input { background-color: var(--brand-input); }
+    .text-input { color: var(--brand-input); }
+    .border-input { border-color: var(--brand-input); }
+    .bg-ring { background-color: var(--brand-ring); }
+    .text-ring { color: var(--brand-ring); }
+    .ring-ring { --tw-ring-color: var(--brand-ring); }
+  </style>
+
+  <!-- 6. 图标基础 + 工具类 -->
+  <style>
+    [data-icon] { display: inline-flex; align-items: center; justify-content: center; width: 1em; height: 1em; line-height: 0; }
+    [data-icon] svg { width: 1em; height: 1em; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+
+  <!-- 7. 关键布局（不依赖 Tailwind 运行时） -->
+  <style id="critical-layout">
+    .topbar {
+      position: sticky; top: 0; z-index: 50;
+      display: grid; grid-template-columns: auto 1fr auto; align-items: center;
+      gap: var(--s-4);
+      padding: var(--s-3) var(--s-5);
+      background: color-mix(in srgb, var(--bg) 88%, transparent);
+      backdrop-filter: saturate(140%) blur(10px);
+      -webkit-backdrop-filter: saturate(140%) blur(10px);
+      border-bottom: 1px solid var(--line-soft);
+    }
+    .topbar .nav-brand { display: inline-flex; align-items: center; gap: var(--s-2); }
+    .topbar .nav-menu { display: inline-flex; align-items: center; gap: var(--s-2); justify-content: center; }
+    .topbar .nav-right { display: inline-flex; align-items: center; gap: var(--s-2); justify-content: flex-end; }
+
+    .section { width: 100%; max-width: 1200px; margin-inline: auto; padding-inline: var(--s-5); }
+
+    /* Hero 双栏 */
+    .hero { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); align-items: center; gap: var(--s-6); padding-block: var(--s-7) var(--s-6); }
+    .hero .hero-text { min-width: 0; }
+    .hero .hero-visual { position: relative; aspect-ratio: 4 / 5; border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--shadow-2); }
+    .hero .hero-visual img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .hero .hero-visual .visual-tag { position: absolute; left: var(--s-4); bottom: var(--s-4); right: var(--s-4); display: inline-flex; align-items: center; gap: var(--s-2); padding: var(--s-2) var(--s-3); border-radius: var(--r-pill); background: color-mix(in srgb, var(--surface) 90%, transparent); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); box-shadow: var(--shadow-1); font-family: var(--font-hand); font-size: 20px; color: var(--brand-ink); }
+    .hero .hero-kicker { display: inline-flex; align-items: center; gap: var(--s-2); padding: 6px 14px; border-radius: var(--r-pill); background: var(--brand-tint); color: var(--brand-ink); font-size: 12px; letter-spacing: 0.06em; }
+    .hero .hero-title { font-family: var(--font-display); font-weight: 700; line-height: 1.05; margin: var(--s-4) 0 var(--s-2); }
+    .hero .hero-overline { letter-spacing: 0.32em; font-size: 13px; font-weight: 600; color: var(--brand-strong); margin-bottom: var(--s-4); }
+    .hero .hero-desc { max-width: 46ch; font-size: 16px; line-height: 1.75; color: var(--ink-2); margin-bottom: var(--s-5); }
+    .hero .hero-cta { display: inline-flex; flex-wrap: wrap; gap: var(--s-3); }
+
+    /* 统计区 */
+    .stats-panel { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--shadow-1); }
+    .stats-panel .stat-cell { padding: var(--s-5) var(--s-3); text-align: center; border-left: 1px solid var(--line-soft); }
+    .stats-panel .stat-cell:first-child { border-left: none; }
+    .stats-panel .stat-num { font-family: var(--font-display); font-size: 36px; font-weight: 700; line-height: 1; color: var(--brand-strong); }
+    .stats-panel .stat-label { margin-top: var(--s-2); font-size: 13px; color: var(--ink-2); }
+
+    /* 照片墙 */
+    .photo-head { display: flex; flex-direction: column; gap: var(--s-2); margin-bottom: var(--s-4); }
+    .filter-row { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-bottom: var(--s-5); }
+    .photo-grid { column-count: 3; column-gap: var(--s-4); }
+    .photo-grid .photo-card { break-inside: avoid; margin-bottom: var(--s-4); }
+    .photo-card { position: relative; display: block; border-radius: var(--r-lg); overflow: hidden; background: var(--surface); border: 1px solid var(--line-soft); box-shadow: var(--shadow-1); cursor: pointer; }
+    .photo-card img { display: block; width: 100%; height: auto; }
+    .photo-card figcaption { padding: var(--s-3) var(--s-4); display: flex; flex-direction: column; gap: 4px; }
+
+    /* 灯箱 */
+    .lightbox { position: fixed; inset: 0; z-index: 100; display: none; align-items: center; justify-content: center; background: color-mix(in srgb, var(--ink) 78%, transparent); padding: var(--s-5); }
+    .lightbox.is-open { display: flex; }
+    .lightbox .lb-stage { position: relative; max-width: min(92vw, 1100px); max-height: 88vh; display: flex; align-items: center; justify-content: center; }
+    .lightbox img { max-width: 100%; max-height: 88vh; object-fit: contain; border-radius: var(--r-lg); box-shadow: var(--shadow-3); }
+
+    /* 故事信 */
+    .story { position: relative; padding-block: var(--s-7); }
+    .story .letter { max-width: 640px; margin-inline: auto; }
+    .story .letter p { font-family: var(--font-hand); font-size: 24px; line-height: 1.7; color: var(--ink); margin: 0 0 var(--s-4); }
+    .story .letter .sign { text-align: right; margin-top: var(--s-5); font-family: var(--font-hand); font-size: 22px; color: var(--brand-ink); }
+
+    .footer { border-top: 1px solid var(--line-soft); padding-block: var(--s-6); }
+
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: minmax(0, 1fr); gap: var(--s-5); }
+      .hero .hero-visual { max-width: 420px; margin-inline: auto; width: 100%; }
+      .stats-panel { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .stats-panel .stat-cell:nth-child(4) { border-left: 1px solid var(--line-soft); }
+      .stats-panel .stat-cell:nth-child(3n+1) { border-left: none; }
+      .stats-panel .stat-cell:nth-child(4), .stats-panel .stat-cell:nth-child(5) { border-top: 1px solid var(--line-soft); }
+      .photo-grid { column-count: 2; }
+    }
+    @media (max-width: 600px) {
+      .topbar { grid-template-columns: auto 1fr; padding: var(--s-3) var(--s-4); }
+      .topbar .nav-menu { display: none; }
+      .topbar .nav-right { justify-content: flex-end; }
+      .stats-panel { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .stats-panel .stat-cell { border-left: 1px solid var(--line-soft); }
+      .stats-panel .stat-cell:nth-child(2n+1) { border-left: none; }
+      .stats-panel .stat-cell:nth-child(n+3) { border-top: 1px solid var(--line-soft); }
+      .photo-grid { column-count: 1; }
+      .hero { padding-block: var(--s-6) var(--s-5); }
+      .story .letter p { font-size: 20px; }
+    }
+  </style>
+</head>
+<body class="min-h-screen font-sans antialiased">
+
+  <!-- 顶部导航 -->
+  <header class="topbar" role="banner">
+    <a href="index.html" class="nav-brand" aria-label="TA的小世界 首页">
+      <span data-icon aria-hidden="true" style="color:var(--brand-strong);"><i data-lucide="orbit" style="width:22px;height:22px;"></i></span>
+      <span style="font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--ink);letter-spacing:0.02em;">TA的小世界</span>
+    </a>
+    <nav class="nav-menu" aria-label="主导航">
+      <a href="index.html" aria-current="page" style="font-size:14px;font-weight:600;color:var(--brand-strong);padding:8px 14px;border-radius:var(--r-md);background:var(--brand-tint);">首页</a>
+      <a href="gallery.html" data-dom-id="cta-gallery" style="font-size:14px;font-weight:500;color:var(--ink-2);padding:8px 14px;border-radius:var(--r-md);text-decoration:none;">生活碎片</a>
+      <a href="upload.html" data-dom-id="cta-upload" style="display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:500;color:var(--ink-2);padding:8px 14px;border-radius:var(--r-md);text-decoration:none;">
+        <span data-icon aria-hidden="true"><i data-lucide="upload" style="width:16px;height:16px;"></i></span>
+        上传碎片
+      </a>
+    </nav>
+    <div class="nav-right">
+      <a href="auth.html" data-dom-id="cta-login" class="bg-primary text-primary-foreground" style="display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:var(--r-pill);font-size:14px;font-weight:600;box-shadow:var(--shadow-1);text-decoration:none;">
+        <span data-icon aria-hidden="true"><i data-lucide="log-in" style="width:16px;height:16px;"></i></span>
+        登录
+      </a>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section id="hero" class="section hero" aria-labelledby="hero-title">
+    <div class="hero-text">
+      <span class="hero-kicker">
+        <span data-icon aria-hidden="true"><i data-lucide="sparkles" style="width:14px;height:14px;"></i></span>
+        二零二六 · 一个人的小宇宙
+      </span>
+      <h1 id="hero-title" class="hero-title text-foreground" style="font-size:clamp(40px, 7vw, 72px);">TA的小世界</h1>
+      <p class="hero-overline">A SMALL WORLD</p>
+      <p class="hero-desc">
+        这里收藏着舍不得删的瞬间——一次日出、一杯凉掉的咖啡、一只路过的橘猫、一个突然冒出来的念头。它们拼在一起，就是我。
+      </p>
+      <div class="hero-cta">
+        <button type="button" data-dom-id="cta-scroll-photos" class="bg-primary text-primary-foreground" style="display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:var(--r-pill);font-size:15px;font-weight:600;border:none;cursor:pointer;box-shadow:var(--shadow-1);transition:background .2s ease, transform .1s ease;">
+          <span data-icon aria-hidden="true"><i data-lucide="images" style="width:18px;height:18px;"></i></span>
+          翻翻照片
+        </button>
+        <a href="gallery.html" data-dom-id="cta-gallery-2" style="display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:var(--r-pill);font-size:15px;font-weight:600;border:1px solid var(--line);background:var(--surface);color:var(--ink);text-decoration:none;box-shadow:var(--shadow-1);">
+          <span data-icon aria-hidden="true"><i data-lucide="layout-grid" style="width:18px;height:18px;"></i></span>
+          生活碎片
+        </a>
+      </div>
+    </div>
+    <div class="hero-visual" aria-hidden="true">
+      <img src="../assets/gallery-01.jpg" alt="封面瞬间" loading="eager">
+      <span class="visual-tag">
+        <span data-icon aria-hidden="true"><i data-lucide="heart" style="width:16px;height:16px;"></i></span>
+        每一张都不舍得删
+      </span>
+    </div>
+  </section>
+
+  <!-- 数据统计 -->
+  <section id="stats" class="section" style="padding-block:var(--s-5) var(--s-6);" aria-label="小世界数据">
+    <div class="stats-panel" role="list">
+      <div class="stat-cell" role="listitem">
+        <div class="stat-num">21</div>
+        <div class="stat-label">张照片</div>
+      </div>
+      <div class="stat-cell" role="listitem">
+        <div class="stat-num">6</div>
+        <div class="stat-label">种心情</div>
+      </div>
+      <div class="stat-cell" role="listitem">
+        <div class="stat-num">4</div>
+        <div class="stat-label">个季节</div>
+      </div>
+      <div class="stat-cell" role="listitem">
+        <div class="stat-num">365</div>
+        <div class="stat-label">天</div>
+      </div>
+      <div class="stat-cell" role="listitem">
+        <div class="stat-num">&infin;</div>
+        <div class="stat-label">个故事</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 照片墙 -->
+  <section id="photo-wall" class="section" style="padding-block:var(--s-6) var(--s-7);" aria-labelledby="photo-wall-title">
+    <div class="photo-head">
+      <h2 id="photo-wall-title" class="text-foreground" style="margin:0;font-family:var(--font-display);font-size:32px;font-weight:700;">那些舍不得删的瞬间</h2>
+      <p class="text-muted-foreground" style="margin:0;font-size:14px;">慢慢翻，慢慢看——每一张都是一次小小的重逢。</p>
+    </div>
+
+    <!-- 筛选条 -->
+    <div class="filter-row no-scrollbar" role="tablist" id="filter-row" aria-label="按分类筛选照片">
+      <button type="button" class="filter-chip is-active" data-dom-id="filter-全部" data-filter="全部" role="tab" aria-selected="true">全部</button>
+      <button type="button" class="filter-chip" data-dom-id="filter-日常" data-filter="日常" role="tab" aria-selected="false">日常</button>
+      <button type="button" class="filter-chip" data-dom-id="filter-旅行" data-filter="旅行" role="tab" aria-selected="false">旅行</button>
+      <button type="button" class="filter-chip" data-dom-id="filter-童年" data-filter="童年" role="tab" aria-selected="false">童年</button>
+      <button type="button" class="filter-chip" data-dom-id="filter-节日" data-filter="节日" role="tab" aria-selected="false">节日</button>
+      <button type="button" class="filter-chip" data-dom-id="filter-小狗" data-filter="小狗" role="tab" aria-selected="false">小狗</button>
+      <button type="button" class="filter-chip" data-dom-id="filter-阅读" data-filter="阅读" role="tab" aria-selected="false">阅读</button>
+    </div>
+
+    <!-- 照片网格 -->
+    <div class="photo-grid" id="photo-grid" role="list" aria-label="照片瀑布流">
+
+      <figure class="photo-card" data-category="日常" data-dom-id="photo-1" data-src="../assets/gallery-01.jpg" tabindex="0" role="button" aria-label="查看第1张：清晨的第一杯咖啡">
+        <img src="../assets/gallery-01.jpg" alt="清晨的第一杯咖啡" loading="lazy">
+        <figcaption>
+          <span class="chip-mini">日常</span>
+          <span class="caption-hand">清晨的第一杯咖啡</span>
+        </figcaption>
+      </figure>
+
+      <figure class="photo-card" data-category="日常" data-dom-id="photo-2" data-src="../assets/gallery-02.jpg" tabindex="0" role="button" aria-label="查看第2张：今天的云像棉花糖">
+        <img src="../assets/gallery-02.jpg" alt="今天的云像棉花糖" loading="lazy">
+        <figcaption>
+          <span class="chip-mini">日常</span>
+          <span class="caption-hand">今天的云像棉花糖</span>
+        </figcaption>
+      </figure>
+
+      <figure class="photo-card" data-category="旅行" data-dom-id="photo-3" data-src="../assets/gallery-03.jpg" tabindex="0" role="button" aria-label="查看第3张：海边的那阵风">
+        <img src="../assets/gallery-03.jpg" alt="海边的那阵风" loading="lazy">
+        <figcaption>
+          <span class="chip-mini">旅行</span>
+          <span class="caption-hand">海边的那阵风</span>
+        </figcaption>
+      </figure>
+
+      <figure class="photo-card" data-category="旅行" data-dom-id="photo-4" data-src="../assets/gallery-04.jpg" tabindex="0" role="button" aria-label="查看第4张：山里安静的清晨">
+        <img src="../assets/gallery-04.jpg" alt="山里安静的清晨" loading="lazy">
+        <figcaption>
+          <span class="chip-mini">旅行</span>
+          <span class="caption-hand">山里安静的清晨</span>
+        </figcaption>
+      </figure>
+
+      <figure class="photo-card" data-category="童年" data-dom-id="photo-5" data-src="../assets/gallery-05.jpg" tabindex="0" role="button" aria-label="查看第5张：老相册里的那个夏天">
+        <img src="../assets/gallery-05.jpg" alt="老相册里的那个夏天" loading="lazy">
+        <figcaption>
+          <span class="chip-mini">童年</span>
+          <span class="caption-hand">老相册里的那个夏天</span>
+        </figcaption>
+      </figure>
+
+      <figure class="photo-card" data-category="童年" data-dom-id="photo-6" data-src="../assets/gallery-06.jpg" tabindex="0" role="button" aria-label="查看第6张：奶奶家院子里的葡萄藤">
+        <img src="../assets/gallery-06.jpg" alt="奶奶家院子里的葡萄藤" loading="lazy">
+        <figcaption>
+          <span class="chip-mini">童年</span>
+          <span class="caption-hand">奶奶家院子里的葡萄藤</span>
+        </figcaption>
+      </figure>
+
+      <figure class="photo-card" data-category="节日" data-dom-id="photo-7" data-src="../assets/gallery-07.jpg" tabindex="0" role="button" aria-label="查看第7张：冬至的那碗汤圆">
+        <img src="../assets/gallery-07.jpg" alt="冬至的那碗汤圆" loading="lazy">
+        <figcaption>
+          <span class="chip-mini">节日</span>
+          <span class="caption-hand">冬至的那碗汤圆</span>
+        </figcaption>
+      </figure>
+
+      <figure class="photo-card" data-category="节日" data-dom-id="photo-8" data-src="../assets/gallery-08.jpg" tabindex="0" role="button" aria-label="查看第8张：生日蜡烛吹灭的瞬间">
+        <img src="../assets/gallery-08.jpg" alt="生日蜡烛吹灭的瞬间" loading="lazy">
+        <figcaption>
+          <span class="chip-mini">节日</span>
+          <span class="caption-hand">生日蜡烛吹灭的瞬间</span>
+        </figcaption>
+      </figure>
+
+      <figure class="photo-card" data-category="小狗" data-dom-id="photo-9" data-src="../assets/gallery-09.jpg" tabindex="0" role="button" aria-label="查看第9张：它第一次学会握手">
+        <img src="../assets/gallery-09.jpg" alt="它第一次学会握手" loading="lazy">
+        <figcaption>
+          <span class="chip-mini">小狗</span>
+          <span class="caption-hand">它第一次学会握手</span>
+        </figcaption>
+      </figure>
+
+      <figure class="photo-card" data-category="小狗" data-dom-id="photo-10" data-src="../assets/gallery-10.jpg" tabindex="0" role="button" aria-label="查看第10张：午睡时缩成一团">
+        <img src="../assets/gallery-10.jpg" alt="午睡时缩成一团" loading="lazy">
+        <figcaption>
+          <span class="chip-mini">小狗</span>
+          <span class="caption-hand">午睡时缩成一团</span>
+        </figcaption>
+      </figure>
+
+      <figure class="photo-card" data-category="阅读" data-dom-id="photo-11" data-src="../assets/gallery-11.jpg" tabindex="0" role="button" aria-label="查看第11张：读到最后哭了的那本">
+        <img src="../assets/gallery-11.jpg" alt="读到最后哭了的那本" loading="lazy">
+        <figcaption>
+          <span class="chip-mini">阅读</span>
+          <span class="caption-hand">读到最后哭了的那本</span>
+        </figcaption>
+      </figure>
+
+      <figure class="photo-card" data-category="阅读" data-dom-id="photo-12" data-src="../assets/gallery-12.jpg" tabindex="0" role="button" aria-label="查看第12张：图书馆靠窗的位置">
+        <img src="../assets/gallery-12.jpg" alt="图书馆靠窗的位置" loading="lazy">
+        <figcaption>
+          <span class="chip-mini">阅读</span>
+          <span class="caption-hand">图书馆靠窗的位置</span>
+        </figcaption>
+      </figure>
+
+    </div>
+  </section>
+
+  <!-- 灯箱 -->
+  <div class="lightbox" id="lightbox" data-dom-id="lightbox" role="dialog" aria-modal="true" aria-label="照片预览" aria-hidden="true">
+    <button type="button" class="lb-close" data-dom-id="lightbox-close" aria-label="关闭预览" style="position:absolute;top:var(--s-4);right:var(--s-4);width:44px;height:44px;border-radius:var(--r-md);background:var(--surface);border:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:var(--shadow-2);color:var(--ink);">
+      <i data-lucide="x" style="width:22px;height:22px;"></i>
+    </button>
+    <button type="button" class="lb-nav lb-prev" data-dom-id="lightbox-prev" aria-label="上一张" style="position:absolute;left:var(--s-4);top:50%;transform:translateY(-50%);width:48px;height:48px;border-radius:var(--r-pill);background:var(--surface);border:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:var(--shadow-2);color:var(--ink);">
+      <i data-lucide="chevron-left" style="width:24px;height:24px;"></i>
+    </button>
+    <div class="lb-stage">
+      <img id="lightbox-img" src="" alt="预览照片" />
+    </div>
+    <button type="button" class="lb-nav lb-next" data-dom-id="lightbox-next" aria-label="下一张" style="position:absolute;right:var(--s-4);top:50%;transform:translateY(-50%);width:48px;height:48px;border-radius:var(--r-pill);background:var(--surface);border:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:var(--shadow-2);color:var(--ink);">
+      <i data-lucide="chevron-right" style="width:24px;height:24px;"></i>
+    </button>
+    <p id="lightbox-caption" style="position:absolute;left:0;right:0;bottom:var(--s-4);text-align:center;font-family:var(--font-hand);font-size:20px;color:var(--surface);text-shadow:0 1px 6px color-mix(in srgb, var(--ink) 50%, transparent);"></p>
+  </div>
+
+  <!-- 故事信 -->
+  <section id="story" class="section story" aria-labelledby="story-title">
+    <div class="letter">
+      <h2 id="story-title" class="text-foreground" style="margin:0 0 var(--s-5);font-family:var(--font-display);font-size:30px;font-weight:700;text-align:center;">写给未来的自己</h2>
+      <p>亲爱的你——</p>
+      <p>有些瞬间会偷偷溜走，像指缝里的水，像清晨还没来得及记住的梦。所以我把它们留下来，存在这里，存在这个小小的世界里。一张照片、一行字，都是我对时间的温柔抵抗。</p>
+      <p>时间过得很快，快到我都来不及回头看。但当我把这些碎片拼在一起，才发现原来这一年这么满——原来我也认真地，活过了每一个普通的日子。</p>
+      <p>希望未来的你，翻到这里时还能笑出来。还能记得那杯咖啡的温度，那只猫的眼神，那个突然冒出来又很快忘掉的念头。它们没有意义，但它们是你。</p>
+      <p class="sign">—— 你自己，二零二六</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="footer" class="footer section" role="contentinfo">
+    <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--s-3);">
+      <p class="text-muted-foreground" style="margin:0;font-size:14px;">TA的小世界 · 把每一个舍不得删的瞬间，慢慢攒成一座小小博物馆。</p>
+      <nav aria-label="页脚导航" style="display:inline-flex;gap:var(--s-4);">
+        <a href="gallery.html" data-dom-id="cta-gallery-3" class="text-muted-foreground" style="font-size:13px;text-decoration:none;">生活碎片</a>
+        <a href="auth.html" data-dom-id="cta-login-2" class="text-muted-foreground" style="font-size:13px;text-decoration:none;">登录</a>
+      </nav>
+    </div>
+    <p class="text-muted-foreground" style="margin:var(--s-3) 0 0;font-size:12px;opacity:0.7;">&copy; 2026 TA的小世界 · A Small World · 用心记录每一个温柔瞬间</p>
+  </footer>
+
+  <!-- 组件级样式 -->
+  <style>
+    .filter-chip {
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: var(--r-pill);
+      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--ink-2);
+      cursor: pointer;
+      transition: all 0.18s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .filter-chip:hover { border-color: var(--brand-soft); color: var(--brand-ink); background: var(--brand-tint); }
+    .filter-chip:focus-visible { outline: 2px solid var(--brand-strong); outline-offset: 2px; }
+    .filter-chip.is-active {
+      background: var(--brand-strong);
+      color: var(--surface);
+      border-color: var(--brand-strong);
+      box-shadow: var(--shadow-1);
+    }
+
+    .photo-card { transition: transform 0.22s ease, box-shadow 0.22s ease; }
+    .photo-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-2); }
+    .photo-card:focus-visible { outline: 2px solid var(--brand-strong); outline-offset: 3px; }
+    .photo-card img { transition: transform 0.4s ease; }
+    .photo-card:hover img { transform: scale(1.04); }
+
+    .chip-mini {
+      display: inline-flex; align-items: center; align-self: flex-start;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.04em;
+      padding: 2px 8px; border-radius: var(--r-sm);
+      background: var(--brand-tint); color: var(--brand-ink);
+    }
+    .caption-hand {
+      font-family: var(--font-hand);
+      font-size: 18px; line-height: 1.3;
+      color: var(--ink);
+    }
+
+    .photo-card.is-hidden { display: none; }
+
+    .lb-close:hover, .lb-nav:hover { background: var(--brand-soft); color: var(--brand-ink); }
+    .lb-close:focus-visible, .lb-nav:focus-visible { outline: 2px solid var(--brand-strong); outline-offset: 2px; }
+
+    .hero-cta button:hover { background: var(--brand-ink); }
+    .hero-cta button:active { transform: translateY(1px); }
+    .hero-cta a:hover { border-color: var(--brand-soft); color: var(--brand-ink); background: var(--brand-tint); }
+
+    .hero-kicker, .filter-chip, .photo-card, .lb-close, .lb-nav, .hero-cta button, .hero-cta a { -webkit-tap-highlight-color: transparent; }
+  </style>
+
+  <!-- JS 交互 -->
+  <script>
+    (function () {
+      // Lucide 初始化
+      if (window.lucide && typeof window.lucide.createIcons === 'function') {
+        window.lucide.createIcons();
+      }
+
+      var grid = document.getElementById('photo-grid');
+      var cards = grid ? Array.prototype.slice.call(grid.querySelectorAll('.photo-card')) : [];
+      var filterRow = document.getElementById('filter-row');
+      var chips = filterRow ? Array.prototype.slice.call(filterRow.querySelectorAll('.filter-chip')) : [];
+
+      // 1. 筛选
+      function applyFilter(filter) {
+        cards.forEach(function (card) {
+          var cat = card.getAttribute('data-category');
+          var match = (filter === '全部' || cat === filter);
+          if (match) { card.classList.remove('is-hidden'); }
+          else { card.classList.add('is-hidden'); }
+        });
+      }
+
+      chips.forEach(function (chip) {
+        chip.addEventListener('click', function () {
+          chips.forEach(function (c) {
+            c.classList.remove('is-active');
+            c.setAttribute('aria-selected', 'false');
+          });
+          chip.classList.add('is-active');
+          chip.setAttribute('aria-selected', 'true');
+          applyFilter(chip.getAttribute('data-filter'));
+        });
+      });
+
+      // 2. 灯箱
+      var lightbox = document.getElementById('lightbox');
+      var lbImg = document.getElementById('lightbox-img');
+      var lbCaption = document.getElementById('lightbox-caption');
+      var btnClose = document.querySelector('[data-dom-id="lightbox-close"]');
+      var btnPrev = document.querySelector('[data-dom-id="lightbox-prev"]');
+      var btnNext = document.querySelector('[data-dom-id="lightbox-next"]');
+      var currentIndex = 0;
+
+      function visibleCards() {
+        return cards.filter(function (c) { return !c.classList.contains('is-hidden'); });
+      }
+
+      function openLightbox(card) {
+        var list = visibleCards();
+        var idx = list.indexOf(card);
+        if (idx < 0) return;
+        currentIndex = idx;
+        renderLightbox(list);
+        lightbox.classList.add('is-open');
+        lightbox.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        if (btnClose) btnClose.focus();
+      }
+
+      function renderLightbox(list) {
+        var card = list[currentIndex];
+        if (!card) return;
+        var src = card.getAttribute('data-src') || (card.querySelector('img') ? card.querySelector('img').src : '');
+        var cap = card.querySelector('.caption-hand') ? card.querySelector('.caption-hand').textContent : '';
+        lbImg.src = src;
+        lbImg.alt = cap || '预览照片';
+        if (lbCaption) lbCaption.textContent = cap;
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('is-open');
+        lightbox.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        var lastCard = visibleCards()[currentIndex];
+        if (lastCard) lastCard.focus();
+      }
+
+      function step(delta) {
+        var list = visibleCards();
+        if (!list.length) return;
+        currentIndex = (currentIndex + delta + list.length) % list.length;
+        renderLightbox(list);
+      }
+
+      cards.forEach(function (card) {
+        card.addEventListener('click', function () { openLightbox(card); });
+        card.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openLightbox(card);
+          }
+        });
+      });
+
+      if (btnClose) btnClose.addEventListener('click', closeLightbox);
+      if (btnPrev) btnPrev.addEventListener('click', function () { step(-1); });
+      if (btnNext) btnNext.addEventListener('click', function () { step(1); });
+
+      lightbox.addEventListener('click', function (e) {
+        if (e.target === lightbox) closeLightbox();
+      });
+
+      document.addEventListener('keydown', function (e) {
+        if (!lightbox.classList.contains('is-open')) return;
+        if (e.key === 'Escape') { e.preventDefault(); closeLightbox(); }
+        else if (e.key === 'ArrowLeft') { e.preventDefault(); step(-1); }
+        else if (e.key === 'ArrowRight') { e.preventDefault(); step(1); }
+      });
+
+      // 3. 平滑滚动到照片墙
+      var scrollBtn = document.querySelector('[data-dom-id="cta-scroll-photos"]');
+      var photoWall = document.getElementById('photo-wall');
+      if (scrollBtn && photoWall) {
+        scrollBtn.addEventListener('click', function () {
+          photoWall.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
